@@ -1,0 +1,166 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+enum UserRole {
+  employee
+  supervisor
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  name               String   @db.VarChar(150)
+  email              String   @unique @db.VarChar(150)
+  passwordHash       String   @map("password_hash") @db.VarChar(255)
+  role               UserRole @default(employee)
+  mustChangePassword Boolean  @default(false) @map("must_change_password")
+  active             Boolean  @default(true)
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  conversations Conversation[]
+  feedback      Feedback[]
+
+  @@map("users")
+}
+
+model Product {
+  id          Int                         @id @default(autoincrement())
+  sku         String?                     @unique
+  name        String
+  description String?
+  category    String?
+  price       Decimal?                    @db.Decimal(10, 2)
+  stock       Int                         @default(0)
+  embedding   Unsupported("vector(768)")?
+  active      Boolean                     @default(true)
+  createdAt   DateTime                    @default(now()) @map("created_at")
+  updatedAt   DateTime                    @default(now()) @updatedAt @map("updated_at")
+
+  messageProducts MessageProduct[]
+
+  @@map("products")
+}
+
+model KnowledgeBase {
+  id          Int                         @id @default(autoincrement())
+  title       String                      @db.VarChar(255)
+  description String
+  embedding   Unsupported("vector(768)")?
+  createdAt   DateTime                    @default(now()) @map("created_at")
+
+  messageKnowledge MessageKnowledge[]
+
+  @@map("knowledge_base")
+}
+
+enum MessageRole {
+  user
+  assistant
+}
+
+enum FeedbackType {
+  like
+  dislike
+}
+
+model Conversation {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  title     String?  @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id])
+  messages Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id                Int         @id @default(autoincrement())
+  conversationId    Int         @map("conversation_id")
+  role              MessageRole
+  content           String
+  bestMatchDistance Float?      @map("best_match_distance")
+  responseTimeMs    Int?        @map("response_time_ms")
+  createdAt         DateTime    @default(now()) @map("created_at")
+
+  conversation     Conversation       @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  messageProducts  MessageProduct[]
+  messageKnowledge MessageKnowledge[]
+  feedback         Feedback?
+  geminiLogs       GeminiLog[]
+
+  @@map("messages")
+}
+
+model MessageProduct {
+  messageId          Int   @map("message_id")
+  productId          Int   @map("product_id")
+  similarityDistance Float @map("similarity_distance")
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@id([messageId, productId])
+  @@map("message_product")
+}
+
+model MessageKnowledge {
+  messageId          Int   @map("message_id")
+  knowledgeBaseId    Int   @map("knowledge_base_id")
+  similarityDistance Float @map("similarity_distance")
+
+  message       Message       @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  knowledgeBase KnowledgeBase @relation(fields: [knowledgeBaseId], references: [id])
+
+  @@id([messageId, knowledgeBaseId])
+  @@map("message_knowledge")
+}
+
+model Feedback {
+  id        Int          @id @default(autoincrement())
+  messageId Int          @unique @map("message_id")
+  userId    Int          @map("user_id")
+  type      FeedbackType
+  comment   String?
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("feedback")
+}
+
+model GeminiLog {
+  id             Int      @id @default(autoincrement())
+  messageId      Int?     @map("message_id")
+  success        Boolean
+  errorCode      String?  @map("error_code") @db.VarChar(100)
+  responseTimeMs Int?     @map("response_time_ms")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  message Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@map("gemini_logs")
+}
+
+model QueryTemplate {
+  id           Int     @id @default(autoincrement())
+  title        String  @db.VarChar(100)
+  queryText    String  @map("query_text")
+  displayOrder Int     @default(0) @map("display_order")
+  active       Boolean @default(true)
+
+  @@map("query_templates")
+}
