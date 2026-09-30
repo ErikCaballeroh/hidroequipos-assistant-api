@@ -1,0 +1,98 @@
+[
+    {
+        "sku": "QUI-001",
+        "name": "Algicida X",
+        "description": "Elimina algas verdes, negras y mostaza. Previene su reaparición hasta por 30 días con uso regular.",
+        "category": "quimico",
+        "price": 250,
+        "stock": 18
+    },
+    {
+        "sku": "QUI-002",
+        "name": "Cloro granulado 70%",
+        "description": "Desinfectante de choque para tratamiento de agua turbia o contaminada. Dosis recomendada: 150g por cada 10,000L.",
+        "category": "quimico",
+        "price": 180,
+        "stock": 40
+    },
+    {
+        "sku": "QUI-003",
+        "name": "Reductor de cloro",
+        "description": "Neutraliza el exceso de cloro libre en el agua. Útil cuando el olor a cloro es muy fuerte o el nivel supera los 5 ppm.",
+        "category": "quimico",
+        "price": 210,
+        "stock": 12
+    },
+    {
+        "sku": "QUI-004",
+        "name": "Clarificador de agua",
+        "description": "Aglutina partículas suspendidas que causan turbidez, facilitando su filtrado. Ideal para agua verdosa o lechosa.",
+        "category": "quimico",
+        "price": 195,
+        "stock": 25
+    },
+    {
+        "sku": "QUI-005",
+        "name": "Ácido cianúrico (estabilizador)",
+        "description": "Protege el cloro libre de la degradación por rayos UV en albercas exteriores. Se aplica una vez por temporada.",
+        "category": "quimico",
+        "price": 165,
+        "stock": 20
+    },
+    {
+        "sku": "QUI-006",
+        "name": "Kit de prueba de pH y cloro",
+        "description": "Tiras reactivas para medir pH, cloro libre y alcalinidad total. Paquete de 50 pruebas.",
+        "category": "quimico",
+        "price": 120,
+        "stock": 35
+    },
+    {
+        "sku": "FIL-001",
+        "name": "Cartucho de filtro estándar",
+        "description": "Cartucho de repuesto para filtros de cartucho de albercas residenciales. Compatible con la mayoría de sistemas de 4-6m³/h.",
+        "category": "filtro",
+        "price": 450,
+        "stock": 15
+    },
+    {
+        "sku": "FIL-002",
+        "name": "Arena de sílice para filtro (25kg)",
+        "description": "Medio filtrante para filtros de arena. Granulometría 0.45-0.85mm, recomendado para cambio cada 3-5 años.",
+        "category": "filtro",
+        "price": 320,
+        "stock": 8
+    },
+    {
+        "sku": "BOM-001",
+        "name": "Bomba centrífuga 1 HP",
+        "description": "Bomba de recirculación para albercas de hasta 40,000L. Motor de alta eficiencia, bajo consumo eléctrico.",
+        "category": "bomba",
+        "price": 3200,
+        "stock": 6
+    },
+    {
+        "sku": "BOM-002",
+        "name": "Kit de sellos y empaques para bomba",
+        "description": "Refacciones de sello mecánico y o-rings para mantenimiento preventivo de bombas centrífugas estándar.",
+        "category": "bomba",
+        "price": 280,
+        "stock": 22
+    },
+    {
+        "sku": "ACC-001",
+        "name": "Red de superficie con mango telescópico",
+        "description": "Para retirar hojas y basura flotante. Mango extensible de 1.5 a 3 metros.",
+        "category": "accesorio",
+        "price": 340,
+        "stock": 14
+    },
+    {
+        "sku": "ACC-002",
+        "name": "Aspiradora manual de fondo",
+        "description": "Conecta a la manguera del filtro para aspirar sedimento y arena del piso de la alberca.",
+        "category": "accesorio",
+        "price": 560,
+        "stock": 9
+    }
+]
