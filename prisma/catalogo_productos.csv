@@ -1,0 +1,148 @@
+sku,name,description,category,price,stock,active
+FIL-001,"Abrazadera P/Valvula Fpd 16, 19, 24, 26 y 31","Componente o refacción del sistema de filtración de la alberca: Abrazadera P/Valvula Fpd 16, 19, 24, 26 y 31.",filtracion,550,15,true
+QUI-001,Acido Clorhidrico 20L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Acido Clorhidrico 20L.,quimico,500,40,true
+QUI-002,Acido Clorhidrico 4L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Acido Clorhidrico 4L.,quimico,100,40,true
+LIM-001,Adaptador P/Manguera de Barredora,Equipo o accesorio para la limpieza manual de la alberca: Adaptador P/Manguera de Barredora.,limpieza,90,12,true
+QUI-003,Alguicida 10L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Alguicida 10L.,quimico,500,40,true
+QUI-004,Alguicida 1L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Alguicida 1L.,quimico,70,40,true
+QUI-005,Alguicida 20L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Alguicida 20L.,quimico,1000,40,true
+QUI-006,Alguicida 4L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Alguicida 4L.,quimico,240,40,true
+FIL-002,Arena Silica para Filtro Costal de 1 Pie Cubico,Componente o refacción del sistema de filtración de la alberca: Arena Silica para Filtro Costal de 1 Pie Cubico.,filtracion,250,15,true
+FIL-003,Arena Zeolita Mineral para Filtro 22Kg,Componente o refacción del sistema de filtración de la alberca: Arena Zeolita Mineral para Filtro 22Kg.,filtracion,370,15,true
+QUI-007,Baja Ph 5 Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Baja Ph 5 Kg.,quimico,370,40,true
+LIM-002,Barredora de 8 Ruedas con Cepillo Integrado Marca Panda,Equipo o accesorio para la limpieza manual de la alberca: Barredora de 8 Ruedas con Cepillo Integrado Marca Panda.,limpieza,550,12,true
+LIM-003,Barredora de 8 Ruedas Marca Sibrape,Equipo o accesorio para la limpieza manual de la alberca: Barredora de 8 Ruedas Marca Sibrape.,limpieza,400,12,true
+LIM-004,Barredora Flexible de 8 Ruedas Marca Panda,Equipo o accesorio para la limpieza manual de la alberca: Barredora Flexible de 8 Ruedas Marca Panda.,limpieza,500,12,true
+LIM-005,Barredora Triangular con Cepillo Integrado Marca Panda,Equipo o accesorio para la limpieza manual de la alberca: Barredora Triangular con Cepillo Integrado Marca Panda.,limpieza,550,12,true
+BOM-001,Bomba Aquapak Silver ¾ Hp 110 Volts Succ y Desc de 1 ½”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Silver ¾ Hp 110 Volts Succ y Desc de 1 ½”.,bombeo,3290,8,true
+BOM-002,Bomba Aquapak Silver ¾ Hp 220 Volts Succ y Desc de 1 ½”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Silver ¾ Hp 220 Volts Succ y Desc de 1 ½”.,bombeo,3290,8,true
+BOM-003,"Bomba Aquapak Silver 1.0 Hp 110 Volts Succ y Desc de 1 ½""","Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Silver 1.0 Hp 110 Volts Succ y Desc de 1 ½"".",bombeo,3590,8,true
+BOM-004,Bomba Aquapak Silver 1.0 Hp 220 Volts Succ y Desc de 1 ½”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Silver 1.0 Hp 220 Volts Succ y Desc de 1 ½”.,bombeo,3590,8,true
+BOM-005,Bomba Aquapak Silver 1.5 Hp 110 Volts Succ y Desc de 1 ½”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Silver 1.5 Hp 110 Volts Succ y Desc de 1 ½”.,bombeo,3890,8,true
+BOM-006,Bomba Aquapak Silver 1.5 Hp 220 Volts Succ y Desc de 1 ½”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Silver 1.5 Hp 220 Volts Succ y Desc de 1 ½”.,bombeo,3890,8,true
+BOM-007,Bomba Aquapak Supra 2.0 Hp 220 Volts Succ y Desc de 2”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Supra 2.0 Hp 220 Volts Succ y Desc de 2”.,bombeo,5290,8,true
+BOM-008,Bomba Aquapak Supra 2.5 Hp 220 Volts Succ y Desc de 2”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Supra 2.5 Hp 220 Volts Succ y Desc de 2”.,bombeo,5890,8,true
+BOM-009,Bomba Aquapak Supra 3.0 Hp 220 Volts Succ y Desc de 2”,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Bomba Aquapak Supra 3.0 Hp 220 Volts Succ y Desc de 2”.,bombeo,6490,8,true
+ACC-001,Boquilla Aspirado de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Boquilla Aspirado de 1 ½”.,accesorios,90,10,true
+ACC-002,Boquilla Aspirado de 1 ½” (Cementar),Accesorio o equipo complementario para la alberca o el jacuzzi: Boquilla Aspirado de 1 ½” (Cementar).,accesorios,180,10,true
+ACC-003,Boquilla de Retorno con Orificio de ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Boquilla de Retorno con Orificio de ½”.,accesorios,70,10,true
+ACC-004,Boquilla de Retorno con Orificio de ¾”,Accesorio o equipo complementario para la alberca o el jacuzzi: Boquilla de Retorno con Orificio de ¾”.,accesorios,70,10,true
+ACC-005,Boquilla de Retorno con Orificio de 1”,Accesorio o equipo complementario para la alberca o el jacuzzi: Boquilla de Retorno con Orificio de 1”.,accesorios,70,10,true
+ACC-006,Boquilla Efecto Chorro de Laton para Banqueta Conexión ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Boquilla Efecto Chorro de Laton para Banqueta Conexión ½”.,accesorios,150,10,true
+LIM-006,Boquilla Hembra de Arco Variable de 3.7 Ml,Equipo o accesorio para la limpieza manual de la alberca: Boquilla Hembra de Arco Variable de 3.7 Ml.,limpieza,30,12,true
+BOM-010,Caja de Control Aquapak ½ Hp,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Caja de Control Aquapak ½ Hp.,bombeo,1300,8,true
+BOM-011,Caja de Control Aquapak 1 Hp,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Caja de Control Aquapak 1 Hp.,bombeo,1500,8,true
+BOM-012,Caja de Control Aquapak 1.5 Hp,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Caja de Control Aquapak 1.5 Hp.,bombeo,1990,8,true
+BOM-013,Caja de Control Aquapak 5 Hp,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Caja de Control Aquapak 5 Hp.,bombeo,3800,8,true
+BOM-014,Canastilla Cuadrada para Bomba Orum,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Canastilla Cuadrada para Bomba Orum.,bombeo,210,8,true
+ACC-007,Canastilla para Desnatador Modelo 3400,Accesorio o equipo complementario para la alberca o el jacuzzi: Canastilla para Desnatador Modelo 3400.,accesorios,300,10,true
+ACC-008,Canastilla para Desnatador Sp 1070,Accesorio o equipo complementario para la alberca o el jacuzzi: Canastilla para Desnatador Sp 1070.,accesorios,400,10,true
+LIM-007,Cepillo Curvo 18” Cerdas Mixtas Cuerpo de Aluminio,Equipo o accesorio para la limpieza manual de la alberca: Cepillo Curvo 18” Cerdas Mixtas Cuerpo de Aluminio.,limpieza,450,12,true
+LIM-008,"Cepillo Curvo Cerdas de Acero 18""","Equipo o accesorio para la limpieza manual de la alberca: Cepillo Curvo Cerdas de Acero 18"".",limpieza,460,12,true
+LIM-009,Cepillo Curvo de Nylon 18”,Equipo o accesorio para la limpieza manual de la alberca: Cepillo Curvo de Nylon 18”.,limpieza,200,12,true
+LIM-010,Cepillo Recto Cerdas de Acero 10”,Equipo o accesorio para la limpieza manual de la alberca: Cepillo Recto Cerdas de Acero 10”.,limpieza,310,12,true
+QUI-008,Clarificador Floculante 10L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Clarificador Floculante 10L.,quimico,550,40,true
+QUI-009,Clarificador Floculante 1L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Clarificador Floculante 1L.,quimico,70,40,true
+QUI-010,Clarificador Floculante 20L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Clarificador Floculante 20L.,quimico,1000,40,true
+QUI-011,Clarificador Floculante 4L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Clarificador Floculante 4L.,quimico,240,40,true
+ACC-009,Clorador Automatico Panda de 2 Kg,Accesorio o equipo complementario para la alberca o el jacuzzi: Clorador Automatico Panda de 2 Kg.,accesorios,600,10,true
+ACC-010,Clorador Automatico Panda de 4 Kg,Accesorio o equipo complementario para la alberca o el jacuzzi: Clorador Automatico Panda de 4 Kg.,accesorios,1100,10,true
+ACC-011,Clorador Flotante de 7”,Accesorio o equipo complementario para la alberca o el jacuzzi: Clorador Flotante de 7”.,accesorios,150,10,true
+ACC-012,Clorador Flotante de 9”,Accesorio o equipo complementario para la alberca o el jacuzzi: Clorador Flotante de 9”.,accesorios,150,10,true
+ACC-013,Control de Nivel de Agua,Accesorio o equipo complementario para la alberca o el jacuzzi: Control de Nivel de Agua.,accesorios,350,10,true
+FIL-004,Crespina Estandar para Filtro Panda de 24”,Componente o refacción del sistema de filtración de la alberca: Crespina Estandar para Filtro Panda de 24”.,filtracion,300,15,true
+ACC-014,Desnatador Estandar Marca Sibrape,Accesorio o equipo complementario para la alberca o el jacuzzi: Desnatador Estandar Marca Sibrape.,accesorios,1300,10,true
+ACC-015,Desnatador Hayward Modelo 3400,Accesorio o equipo complementario para la alberca o el jacuzzi: Desnatador Hayward Modelo 3400.,accesorios,1400,10,true
+ACC-016,Desnatador Interwater,Accesorio o equipo complementario para la alberca o el jacuzzi: Desnatador Interwater.,accesorios,1300,10,true
+ACC-017,Desnatador Reforzado Marca Panda,Accesorio o equipo complementario para la alberca o el jacuzzi: Desnatador Reforzado Marca Panda.,accesorios,1500,10,true
+ACC-018,"Difusor Vast. Emergente 4 Alto Entrada ½"" S/Boq.","Accesorio o equipo complementario para la alberca o el jacuzzi: Difusor Vast. Emergente 4 Alto Entrada ½"" S/Boq..",accesorios,70,10,true
+ACC-019,Dren de Fondo,Accesorio o equipo complementario para la alberca o el jacuzzi: Dren de Fondo.,accesorios,450,10,true
+ACC-020,Dren de Fondo Marca Sibrape (Solo Rejilla y Marco),Accesorio o equipo complementario para la alberca o el jacuzzi: Dren de Fondo Marca Sibrape (Solo Rejilla y Marco).,accesorios,400,10,true
+BOM-015,Empaque Cuadrado de Tapa de Bomba Marca Orum,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Empaque Cuadrado de Tapa de Bomba Marca Orum.,bombeo,80,8,true
+FIL-005,Filtro de Arena Marca Panda 16”,Componente o refacción del sistema de filtración de la alberca: Filtro de Arena Marca Panda 16”.,filtracion,3790,15,true
+FIL-006,Filtro de Arena Marca Panda 19”,Componente o refacción del sistema de filtración de la alberca: Filtro de Arena Marca Panda 19”.,filtracion,4590,15,true
+FIL-007,Filtro de Arena Marca Panda 24”,Componente o refacción del sistema de filtración de la alberca: Filtro de Arena Marca Panda 24”.,filtracion,6490,15,true
+FIL-008,Filtro de Arena Marca Panda 26”,Componente o refacción del sistema de filtración de la alberca: Filtro de Arena Marca Panda 26”.,filtracion,6990,15,true
+FIL-009,Filtro de Arena Marca Panda 31”,Componente o refacción del sistema de filtración de la alberca: Filtro de Arena Marca Panda 31”.,filtracion,9690,15,true
+FIL-010,Filtro de Arena Marca Panda 36”,Componente o refacción del sistema de filtración de la alberca: Filtro de Arena Marca Panda 36”.,filtracion,11990,15,true
+QUI-012,Hipoclorito de Sodio Al 14% 20 L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Hipoclorito de Sodio Al 14% 20 L.,quimico,520,40,true
+QUI-013,Hipoclorito de Sodio Al 14% 4 L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Hipoclorito de Sodio Al 14% 4 L.,quimico,100,40,true
+ACC-021,Kit Analizador de Cloro y Ph Marca Panda,Accesorio o equipo complementario para la alberca o el jacuzzi: Kit Analizador de Cloro y Ph Marca Panda.,accesorios,200,10,true
+ACC-022,Kit Analizador de Cloro y Ph Marca Sibrape,Accesorio o equipo complementario para la alberca o el jacuzzi: Kit Analizador de Cloro y Ph Marca Sibrape.,accesorios,200,10,true
+ACC-023,Kit Analizador de Ph y Cloro (Repuesto),Accesorio o equipo complementario para la alberca o el jacuzzi: Kit Analizador de Ph y Cloro (Repuesto).,accesorios,90,10,true
+FIL-011,Kit Colector con Tubo Central para Filtro Panda de 24”,Componente o refacción del sistema de filtración de la alberca: Kit Colector con Tubo Central para Filtro Panda de 24”.,filtracion,600,15,true
+FIL-012,Liga de Repuesto para Rotor de Valvula de Filtro Hayward,Componente o refacción del sistema de filtración de la alberca: Liga de Repuesto para Rotor de Valvula de Filtro Hayward.,filtracion,50,15,true
+FIL-013,Liga de Repuesto para Rotor de Valvula de Filtro Panda,Componente o refacción del sistema de filtración de la alberca: Liga de Repuesto para Rotor de Valvula de Filtro Panda.,filtracion,50,15,true
+FIL-014,Liga de Repuesto para Tapa de Prefiltro Silver,Componente o refacción del sistema de filtración de la alberca: Liga de Repuesto para Tapa de Prefiltro Silver.,filtracion,150,15,true
+FIL-015,Liga de Repuesto para Tapa de Prefiltro Supra,Componente o refacción del sistema de filtración de la alberca: Liga de Repuesto para Tapa de Prefiltro Supra.,filtracion,250,15,true
+ACC-024,Empaque para Tapa de Clorador 2Kg,Accesorio o equipo complementario para la alberca o el jacuzzi: Empaque para Tapa de Clorador 2Kg.,accesorios,150,10,true
+ACC-025,Liga para Tapa de Clorador Panda o Interwater 4Kg,Accesorio o equipo complementario para la alberca o el jacuzzi: Liga para Tapa de Clorador Panda o Interwater 4Kg.,accesorios,250,10,true
+FIL-016,Liga Sello Oring Valvula Tanque Filtros Fpd,Componente o refacción del sistema de filtración de la alberca: Liga Sello Oring Valvula Tanque Filtros Fpd.,filtracion,350,15,true
+LIM-011,Mango Telescopico para Barredora 2.4 M,Equipo o accesorio para la limpieza manual de la alberca: Mango Telescopico para Barredora 2.4 M.,limpieza,470,12,true
+LIM-012,Mango Telescopico para Barredora 4.5 M,Equipo o accesorio para la limpieza manual de la alberca: Mango Telescopico para Barredora 4.5 M.,limpieza,650,12,true
+LIM-013,Mango Telescopico para Barredora 7 M,Equipo o accesorio para la limpieza manual de la alberca: Mango Telescopico para Barredora 7 M.,limpieza,1900,12,true
+LIM-014,Manguera para Barredora 10.5 M,Equipo o accesorio para la limpieza manual de la alberca: Manguera para Barredora 10.5 M.,limpieza,850,12,true
+LIM-015,Manguera para Barredora 12 M,Equipo o accesorio para la limpieza manual de la alberca: Manguera para Barredora 12 M.,limpieza,1200,12,true
+LIM-016,Manguera para Barredora 15 M,Equipo o accesorio para la limpieza manual de la alberca: Manguera para Barredora 15 M.,limpieza,1500,12,true
+LIM-017,Manguera para Barredora 7.5 M,Equipo o accesorio para la limpieza manual de la alberca: Manguera para Barredora 7.5 M.,limpieza,750,12,true
+BOM-016,Manometro y Automatico,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Manometro y Automatico.,bombeo,600,8,true
+FIL-017,Prefiltro de Bomba Silver,Componente o refacción del sistema de filtración de la alberca: Prefiltro de Bomba Silver.,filtracion,100,15,true
+FIL-018,Prefiltro de Bomba Supra,Componente o refacción del sistema de filtración de la alberca: Prefiltro de Bomba Supra.,filtracion,150,15,true
+BOM-017,Pumptec Protecc. Mot 1/3 – 1.5 Hp 110/220 V,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Pumptec Protecc. Mot 1/3 – 1.5 Hp 110/220 V.,bombeo,1200,8,true
+FIL-019,Racor + Junta Torica Silver,Componente o refacción del sistema de filtración de la alberca: Racor + Junta Torica Silver.,filtracion,300,15,true
+FIL-020,Racor + Junta Torica Supra,Componente o refacción del sistema de filtración de la alberca: Racor + Junta Torica Supra.,filtracion,320,15,true
+FIL-021,Racor P/Filtro Panda,Componente o refacción del sistema de filtración de la alberca: Racor P/Filtro Panda.,filtracion,430,15,true
+LIM-018,Red Saca Hojas Ligera Tipo Bolsa,Equipo o accesorio para la limpieza manual de la alberca: Red Saca Hojas Ligera Tipo Bolsa.,limpieza,150,12,true
+LIM-019,Red Saca Hojas Ligera Tipo Pala,Equipo o accesorio para la limpieza manual de la alberca: Red Saca Hojas Ligera Tipo Pala.,limpieza,130,12,true
+LIM-020,Red Saca Hojas Tipo Bolsa Reforzada,Equipo o accesorio para la limpieza manual de la alberca: Red Saca Hojas Tipo Bolsa Reforzada.,limpieza,400,12,true
+LIM-021,Red Saca Hojas Tipo Pala con Mini Maneral de 1.50 M,Equipo o accesorio para la limpieza manual de la alberca: Red Saca Hojas Tipo Pala con Mini Maneral de 1.50 M.,limpieza,240,12,true
+LIM-022,Red Saca Hojas Tipo Pala Reforzada,Equipo o accesorio para la limpieza manual de la alberca: Red Saca Hojas Tipo Pala Reforzada.,limpieza,260,12,true
+FIL-022,Rotor Rps Select ¾” 4 Boq Selec de 7.6 - 14Ml,Componente o refacción del sistema de filtración de la alberca: Rotor Rps Select ¾” 4 Boq Selec de 7.6 - 14Ml.,filtracion,250,15,true
+QUI-014,Sarricida 4 L,Producto químico para tratamiento y mantenimiento del agua de la alberca: Sarricida 4 L.,quimico,100,40,true
+BOM-018,Sello Mecanico Silver/Supra,Equipo o refacción para el sistema de bombeo y circulación de la alberca: Sello Mecanico Silver/Supra.,bombeo,220,8,true
+QUI-015,Shock Dicloro Soluble 10Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Shock Dicloro Soluble 10Kg.,quimico,1000,40,true
+QUI-016,Shock Dicloro Soluble 1Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Shock Dicloro Soluble 1Kg.,quimico,120,40,true
+QUI-017,Shock Dicloro Soluble 20Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Shock Dicloro Soluble 20Kg.,quimico,2300,40,true
+QUI-018,Shock Dicloro Soluble 50Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Shock Dicloro Soluble 50Kg.,quimico,4000,40,true
+QUI-019,Shock Dicloro Soluble 5Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Shock Dicloro Soluble 5Kg.,quimico,550,40,true
+QUI-020,Sube Ph 5 Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Sube Ph 5 Kg.,quimico,270,40,true
+QUI-021,Sulfato de Cobre,Producto químico para tratamiento y mantenimiento del agua de la alberca: Sulfato de Cobre.,quimico,300,40,true
+ACC-026,Tapa para Clorador Automatico Panda o Interwater 2Kg,Accesorio o equipo complementario para la alberca o el jacuzzi: Tapa para Clorador Automatico Panda o Interwater 2Kg.,accesorios,150,10,true
+ACC-027,Tapa para Clorador Automatico Panda o Interwater 4Kg,Accesorio o equipo complementario para la alberca o el jacuzzi: Tapa para Clorador Automatico Panda o Interwater 4Kg.,accesorios,250,10,true
+ACC-028,Tapa para Desnatador Hayward,Accesorio o equipo complementario para la alberca o el jacuzzi: Tapa para Desnatador Hayward.,accesorios,360,10,true
+FIL-023,Tapa para Prefiltro de Bomba Silver,Componente o refacción del sistema de filtración de la alberca: Tapa para Prefiltro de Bomba Silver.,filtracion,300,15,true
+FIL-024,Tapa para Prefiltro de Bomba Supra,Componente o refacción del sistema de filtración de la alberca: Tapa para Prefiltro de Bomba Supra.,filtracion,490,15,true
+LIM-023,Tapon para Boquilla de Barredora,Equipo o accesorio para la limpieza manual de la alberca: Tapon para Boquilla de Barredora.,limpieza,90,12,true
+QUI-022,Tricloro Granulado 10Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Granulado 10Kg.,quimico,1200,40,true
+QUI-023,Tricloro Granulado 1Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Granulado 1Kg.,quimico,120,40,true
+QUI-024,Tricloro Granulado 20Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Granulado 20Kg.,quimico,2300,40,true
+QUI-025,Tricloro Granulado 50Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Granulado 50Kg.,quimico,3500,40,true
+QUI-026,Tricloro Granulado 5Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Granulado 5Kg.,quimico,550,40,true
+QUI-027,Tricloro Polvo 10Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Polvo 10Kg.,quimico,1200,40,true
+QUI-028,Tricloro Polvo 1Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Polvo 1Kg.,quimico,120,40,true
+QUI-029,Tricloro Polvo 20Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Polvo 20Kg.,quimico,2300,40,true
+QUI-030,Tricloro Polvo 50Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Polvo 50Kg.,quimico,3000,40,true
+QUI-031,Tricloro Polvo 5Kg,Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Polvo 5Kg.,quimico,650,40,true
+QUI-032,"Tricloro Tableta 3"" 10Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta 3"" 10Kg.",quimico,1200,40,true
+QUI-033,"Tricloro Tableta 3"" 1Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta 3"" 1Kg.",quimico,150,40,true
+QUI-034,"Tricloro Tableta 3"" 20Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta 3"" 20Kg.",quimico,2300,40,true
+QUI-035,"Tricloro Tableta 3"" 50Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta 3"" 50Kg.",quimico,4000,40,true
+QUI-036,"Tricloro Tableta 3"" 5Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta 3"" 5Kg.",quimico,700,40,true
+QUI-037,"Tricloro Tableta 1"" a Granel de 1Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta 1"" a Granel de 1Kg.",quimico,120,40,true
+QUI-038,"Tricloro Tableta Triple Accion 3"" 10Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta Triple Accion 3"" 10Kg.",quimico,1000,40,true
+QUI-039,"Tricloro Tableta Triple Accion 3"" 1Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta Triple Accion 3"" 1Kg.",quimico,120,40,true
+QUI-040,"Tricloro Tableta Triple Accion 3"" 20Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta Triple Accion 3"" 20Kg.",quimico,2300,40,true
+QUI-041,"Tricloro Tableta Triple Accion 3"" 50Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta Triple Accion 3"" 50Kg.",quimico,4000,40,true
+QUI-042,"Tricloro Tableta Triple Accion 3"" 5Kg","Producto químico para tratamiento y mantenimiento del agua de la alberca: Tricloro Tableta Triple Accion 3"" 5Kg.",quimico,550,40,true
+FIL-025,Valvula 6 Vias P/Filtro Panda,Componente o refacción del sistema de filtración de la alberca: Valvula 6 Vias P/Filtro Panda.,filtracion,2200,15,true
+ACC-029,Valvula Check de Servicio de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Check de Servicio de 1 ½”.,accesorios,300,10,true
+ACC-030,Valvula Check de Servicio de 2”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Check de Servicio de 2”.,accesorios,380,10,true
+ACC-031,Valvula Check Resorte Pvc C-40 Cem de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Check Resorte Pvc C-40 Cem de 1 ½”.,accesorios,330,10,true
+ACC-032,"Valvula Check Resorte Pvc C-40 Cem de 1""","Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Check Resorte Pvc C-40 Cem de 1"".",accesorios,200,10,true
+ACC-033,Valvula Check Transparente P/Alberca de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Check Transparente P/Alberca de 1 ½”.,accesorios,550,10,true
+ACC-034,Valvula Esfera con Doble Tuerca Unión de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Esfera con Doble Tuerca Unión de 1 ½”.,accesorios,550,10,true
+ACC-035,Valvula Esfera con Tuerca Unión de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Esfera con Tuerca Unión de 1 ½”.,accesorios,450,10,true
+ACC-036,Valvula Esfera Pvc Compacta Cementar de 1 ½”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Esfera Pvc Compacta Cementar de 1 ½”.,accesorios,120,10,true
+ACC-037,Valvula Esfera Pvc Compacta Cementar de 1”,Accesorio o equipo complementario para la alberca o el jacuzzi: Valvula Esfera Pvc Compacta Cementar de 1”.,accesorios,70,10,true
+FIL-026,Valvula Selectora Filtro 24”,Componente o refacción del sistema de filtración de la alberca: Valvula Selectora Filtro 24”.,filtracion,2290,15,true
+FIL-027,Resorte Valvula 6 Vias,Componente o refacción del sistema de filtración de la alberca: Resorte Valvula 6 Vias.,filtracion,250,15,true

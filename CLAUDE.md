@@ -105,6 +105,7 @@ src/
 - **El `generator client` de `schema.prisma` requiere `output` explícito** (`provider = "prisma-client"`, `output = "../src/generated/prisma"`) — el cliente ya no se genera en `node_modules/@prisma/client`. Por eso, en todo el código, `PrismaClient` se importa desde `../generated/prisma/client` (ruta relativa según la ubicación del archivo), **nunca** desde `'@prisma/client'` directamente — ese import falla con "no exported member 'PrismaClient'".
 - **`src/generated/prisma/` está en `.gitignore`** (es código generado). Cualquier entorno con checkout limpio (CI, un deploy, una máquina nueva del equipo) necesita correr `npx prisma generate` explícitamente antes de compilar o testear — si no, falla con `Cannot find module '../generated/prisma/client.js'`. Además, `prisma generate` necesita que `DATABASE_URL`/`DIRECT_URL` existan como variables de entorno para que `prisma.config.ts` cargue (aunque no haga falta una conexión real) — en CI, usar valores falsos (`postgresql://user:pass@localhost:5432/dummy`) es suficiente.
 - Cada vez que se genera una migración con `prisma migrate dev` que toque estas tablas, **revisa el SQL generado a mano**: Prisma no agrega `CREATE EXTENSION IF NOT EXISTS vector;` ni los índices `ivfflat` (`vector_cosine_ops`) automáticamente — hay que añadirlos manualmente al archivo de migración antes de aplicarla.
+- **No agregues un índice `ivfflat` con `lists` fijo (ej. copiado de la guía genérica) sin ajustarlo al conteo real de filas de la tabla.** `ivfflat` es un índice aproximado que reparte los vectores en `lists` clusters vía k-means; con pocas filas y `lists` sobredimensionado (ej. `lists = 100` con una tabla de 12 productos), la mayoría de los clusters quedan vacíos y una búsqueda puede sondear un cluster sin filas y devolver **0 resultados sin ningún error**, aunque exista un match semántico perfecto en la tabla — esto ya causó un bug real donde `RetrievalService` siempre reportaba "sin contexto suficiente". Mientras el catálogo tenga pocas filas (decenas/cientos), es preferible no indexar `embedding` en absoluto — pgvector recomienda esperar a tener miles de filas antes de indexar. Si se agrega el índice, calcular `lists` sobre el conteo real (`rows / 1000`, mínimo 1, o `sqrt(rows)` para tablas grandes) y considerar `HNSW` en vez de `ivfflat` para evitar este problema de "arranque en frío".
 - Tablas de trazabilidad (`message_product`, `message_knowledge`) tienen llave primaria compuesta — nunca se actualizan, solo se insertan (son un log de auditoría, no un estado editable).
 
 ## Autenticación y roles
@@ -124,6 +125,10 @@ src/
 
 - Mockear `GeminiService` y `EmbeddingsService` en tests unitarios y e2e — no consumir la cuota real de la API de Gemini durante CI.
 - Los tests del `RetrievalService` deben cubrir explícitamente el caso de umbral de confianza superado (sin match), no solo el caso feliz.
+
+## Pendientes conocidos (no bloqueantes)
+
+- **`TOP_K=5` en `RetrievalService` es insuficiente para catálogos con muchas variantes por tamaño.** Confirmado con el catálogo real (147 productos): una consulta sobre algas trajo solo variantes de Alguicida en el `TOP_K`, sin ningún producto de Shock Dicloro/Tricloro, aunque `knowledge_base` indica que ambos se usan juntos para ese tratamiento. El sistema funciona correctamente en lo demás (retrieval, umbral de confianza, trazabilidad) — esto es una afinación de calidad pendiente, no un bug bloqueante. Opciones a evaluar: subir `TOP_K`, o deduplicar por nombre base de producto antes de construir el prompt. Ver el comentario `TODO` en `src/retrieval/retrieval.service.ts`.
 
 ## Cosas que Claude Code NO debe hacer en este repo
 
