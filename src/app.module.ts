@@ -12,8 +12,18 @@ import { PromptBuilderModule } from './prompt-builder/prompt-builder.module.js';
 import { ConversationsModule } from './conversations/conversations.module.js';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, HealthModule, EmbeddingsModule, GeminiModule, RetrievalModule, PromptBuilderModule, ConversationsModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+    HealthModule,
+    EmbeddingsModule,
+    GeminiModule,
+    RetrievalModule,
+    PromptBuilderModule,
+    ConversationsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
