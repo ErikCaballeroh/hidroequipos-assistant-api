@@ -50,10 +50,16 @@ No cambiar el modelo asignado a una tarea sin que el equipo lo apruebe explícit
 | Tarea | Modelo | Servicio |
 |---|---|---|
 | Embeddings (productos, base de conocimiento, consultas) | `gemini-embedding-001` (salida truncada a 768 dimensiones) | `EmbeddingsService` |
-| Condensación de consulta con historial | `gemini-2.5-flash-lite` | `ConversationService.condensarConsulta()` |
-| Generación del diagnóstico final | `gemini-2.5-flash` | `GeminiService` |
+| Condensación de consulta con historial | `gemini-3.5-flash-lite` | `ConversationService.condensarConsulta()` |
+| Generación del diagnóstico final | `gemini-3.5-flash-lite` | `GeminiService` |
+
+**Las dos tareas usan el mismo modelo (`gemini-3.5-flash-lite`), no es un error.** Originalmente se planeó usar `gemini-3.5-flash` (sin "lite") para la generación del diagnóstico, por tener más capacidad de razonamiento. Pero la cuota real de la capa gratuita para `gemini-3.5-flash` (y para casi todos los modelos "Flash" normales de cualquier generación) es de solo **20 peticiones por día** — inviable incluso para que el equipo pruebe la app. `gemini-3.5-flash-lite` tiene 500 peticiones/día, 25 veces más. No cambiar esto a `gemini-3.5-flash` sin confirmar antes, en Google AI Studio, que la cuenta del proyecto tiene una cuota mayor que esa.
 
 Los modelos "Pro" de Gemini son de pago — no usarlos por defecto en ningún flujo sin que el equipo lo decida explícitamente, ya que rompería el supuesto de costo de todo el proyecto.
+
+⚠️ **Los nombres de modelo de Gemini cambian con más frecuencia de lo normal.** Google ha estado restringiendo el acceso a modelos de la generación 2.5 para API keys/proyectos nuevos de forma inconsistente (un modelo puede fallar con 404 mientras otro de la misma generación sigue funcionando), incluso sin fecha de deprecación anunciada. Si cualquiera de los modelos de la tabla empieza a fallar con `404 "no longer available to new users"`, el mensaje de error de la propia API normalmente ya incluye el modelo de reemplazo recomendado —úsalo, y actualiza esta tabla y el código en el mismo cambio. No asumas que la capa gratuita de un modelo nuevo es igual a la del anterior; confírmalo en Google AI Studio antes de depender de él en producción.
+
+Nota aparte: Google está empujando una API nueva ("Interactions API", `/v1beta/interactions`) como la forma recomendada hacia adelante para los modelos más recientes, en vez del `generateContent` que usa este proyecto. Por ahora `generateContent` sigue funcionando y no hay razón para migrar a mitad de proyecto, pero es una migración a considerar más adelante si el equipo decide modernizar la integración.
 
 ## Arquitectura y estructura de módulos
 
@@ -77,12 +83,12 @@ src/
 
 1. Guardar mensaje del empleado (`role: 'user'`).
 2. Traer las últimas 6 entradas del historial de la conversación.
-3. Si hay historial, condensar la consulta con `gemini-2.5-flash-lite` (query rewriting).
+3. Si hay historial, condensar la consulta con `gemini-3.5-flash-lite` (query rewriting).
 4. Generar embedding de la consulta condensada.
 5. Buscar en paralelo (`Promise.all`) contra `products` y `knowledge_base` por distancia coseno.
 6. Comparar la mejor distancia contra el umbral de confianza (`CONFIDENCE_THRESHOLD`, configurable por env, valor de partida `0.6`). Si es peor, usar el prompt de "sin match" en vez del normal.
 7. Construir el prompt final (instrucciones + historial + contexto recuperado + pregunta).
-8. Llamar a `gemini-2.5-flash`; registrar el intento en `gemini_logs` (éxito/error/latencia) sin importar el resultado.
+8. Llamar a `gemini-3.5-flash-lite`; registrar el intento en `gemini_logs` (éxito/error/latencia) sin importar el resultado.
 9. Guardar la respuesta en `messages`.
 10. Si hubo contexto suficiente, insertar las filas de trazabilidad en `message_product` y `message_knowledge` — **esto ocurre siempre después de guardar el mensaje, nunca antes ni en paralelo**.
 
