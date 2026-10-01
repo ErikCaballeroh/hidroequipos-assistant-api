@@ -1,114 +1,239 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# hidroequipos-assistant-api
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend del asistente inteligente de diagnóstico y mantenimiento de albercas de **Hidroequipos y Albercas**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Los empleados describen el síntoma de una alberca en lenguaje natural — agua verde, bomba ruidosa, olor fuerte a cloro — y el sistema responde con un diagnóstico y un plan de tratamiento, citando únicamente productos reales del catálogo de la empresa. El motor combina búsqueda semántica sobre el catálogo y una base de conocimiento técnico con generación de lenguaje natural (RAG), para que cada recomendación esté respaldada por información real en vez de inventada.
 
-## Description
+Es una herramienta de uso interno: el personal técnico resuelve casos más rápido sin depender de memorizar el catálogo completo o las reglas de dosificación de cada producto.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Descripción
 
-## Project setup
+El proyecto está construido con **NestJS** y **TypeScript**, usa **Prisma** para acceso a datos con **PostgreSQL** (extensión `pgvector` para búsqueda semántica), y se integra con **Google Gemini** para generar embeddings y las respuestas del asistente.
 
-```bash
-$ pnpm install
-```
+## Tecnologías
 
-## Compile and run the project
+- NestJS
+- TypeScript
+- Prisma Client
+- PostgreSQL + pgvector (Supabase)
+- JWT
+- Bcrypt
+- Google Generative AI (Gemini)
 
-```bash
-# development
-$ pnpm run start
+## Estructura funcional
 
-# watch mode
-$ pnpm run start:dev
+La API organiza la lógica en los siguientes módulos:
 
-# production mode
-$ pnpm run start:prod
-```
+- Autenticación y reseteo de contraseña gestionado por supervisores
+- Usuarios con roles (empleado / supervisor)
+- Conversaciones y mensajes del chat de diagnóstico
+- Motor de recuperación semántica (embeddings + búsqueda vectorial)
+- Generación de diagnósticos con IA sobre contexto real del catálogo
+- Catálogo de productos y base de conocimiento técnico *(en desarrollo)*
+- Feedback y métricas de uso *(en desarrollo)*
 
-## Run tests
+## Requisitos
+
+- Node.js 22 o superior
+- pnpm 9 o superior
+- Un proyecto de PostgreSQL con la extensión `pgvector` habilitada (Supabase)
+- Una API key de Google Gemini
+
+## Instalación
+
+1. Clona el repositorio.
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+git clone https://github.com/ErikCaballeroh/hidroequipos-assistant-api.git
+cd hidroequipos-assistant-api
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. Instala dependencias.
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+pnpm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+3. Configura las variables de entorno (ver tabla abajo) en un archivo `.env`.
 
-## Observability
+4. Genera el cliente de Prisma.
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+```bash
+npx prisma generate
+```
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+5. Aplica las migraciones.
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+```bash
+npx prisma migrate dev
+```
 
-## Resources
+6. Carga el catálogo de productos y la base de conocimiento.
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+npx prisma db seed
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Variables de entorno
 
-## Support
+| Variable | Descripción | Requerida |
+| --- | --- | --- |
+| `DATABASE_URL` | Conexión con pooler, usada por la aplicación en tiempo de ejecución | Sí |
+| `DIRECT_URL` | Conexión directa, usada por el CLI de Prisma para migrar | Sí |
+| `GEMINI_API_KEY` | API key de Google Gemini, para embeddings y generación | Sí |
+| `JWT_SECRET` | Secreto para firmar y verificar tokens JWT | Sí |
+| `JWT_EXPIRES_IN` | Duración del token (ej. `8h`) | Recomendado |
+| `CONFIDENCE_THRESHOLD` | Umbral de similitud mínima para considerar que hay contexto suficiente | Recomendado |
+| `PORT` | Puerto del servidor | Opcional |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Scripts
 
-## Stay in touch
+| Script | Descripción |
+| --- | --- |
+| `pnpm run start:dev` | Levanta el servidor en modo desarrollo con recarga automática |
+| `pnpm run build` | Compila TypeScript a JavaScript |
+| `pnpm run start:prod` | Ejecuta el build compilado |
+| `pnpm run lint` | Corre el linter |
+| `pnpm run test` | Corre los tests unitarios |
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Ejecución
 
-## License
+### Desarrollo
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+pnpm run start:dev
+```
+
+La API queda disponible en `http://localhost:3000`.
+
+### Verificación rápida
+
+```bash
+curl http://localhost:3000/health
+```
+
+## Autenticación
+
+Las rutas protegidas requieren el header:
+
+```http
+Authorization: Bearer <token>
+```
+
+El token se obtiene en `/auth/login`. Su duración se configura con `JWT_EXPIRES_IN`.
+
+## Endpoints
+
+Base path: `/`
+
+### Auth
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| POST | `/auth/login` | Inicia sesión, devuelve un token | Público |
+
+### Users
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| GET | `/users` | Lista los empleados | Supervisor |
+| POST | `/users` | Crea un empleado | Supervisor |
+| PATCH | `/users/:id` | Edita rol o estado de un empleado | Supervisor |
+| POST | `/users/:id/reset-password` | Resetea la contraseña de un empleado | Supervisor |
+| DELETE | `/users/:id` | Desactiva un empleado | Supervisor |
+
+### Conversations
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| POST | `/conversations` | Crea una conversación | Autenticado |
+| GET | `/conversations` | Lista las conversaciones del usuario actual | Autenticado |
+| POST | `/conversations/:id/messages` | Envía un mensaje y recibe un diagnóstico | Autenticado |
+| GET | `/conversations/:id/messages` | Lista los mensajes de una conversación | Autenticado |
+
+### Health
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| GET | `/health` | Estado del servicio y de la conexión a base de datos | Público |
+
+### Módulos planeados
+
+| Módulo | Rutas | Descripción |
+| --- | --- | --- |
+| Feedback | `POST/DELETE /messages/:id/feedback` | Calificación de respuestas |
+| Products | `GET/POST/PATCH/DELETE /products` | Administración del catálogo |
+| Knowledge base | `GET/POST/PATCH/DELETE /knowledge-base` | Administración de la base de conocimiento |
+| Query templates | `GET/POST/PATCH/DELETE /query-templates` | Atajos de consulta rápida |
+| Admin | `GET /admin/gemini-logs`, `GET /admin/stats` | Monitoreo y métricas |
+
+## Detalle de endpoints
+
+### Auth
+
+`POST /auth/login`
+
+```json
+{
+  "email": "empleado@hidroequipos.com",
+  "password": "contraseña"
+}
+```
+
+### Conversations
+
+`POST /conversations/:id/messages`
+
+```json
+{
+  "content": "el agua de la alberca está verde, creo que tiene algas"
+}
+```
+
+La respuesta incluye el diagnóstico generado, la distancia de confianza del mejor resultado encontrado, y queda ligada a los productos y artículos que la respaldaron.
+
+## Modelo de datos
+
+Las entidades principales de la base de datos son:
+
+- `User`: empleados, con rol (empleado / supervisor)
+- `Product`: catálogo de productos, con su representación semántica
+- `KnowledgeBase`: procedimientos y reglas de dosificación
+- `Conversation` / `Message`: hilos de chat y sus mensajes
+- `MessageProduct` / `MessageKnowledge`: trazabilidad de qué respaldó cada respuesta
+- `Feedback`: calificación de respuestas por el usuario
+- `GeminiLog`: registro de llamadas al modelo de lenguaje
+- `QueryTemplate`: atajos de consulta frecuente
+
+## Prisma
+
+Abrir Prisma Studio:
+
+```bash
+npx prisma studio
+```
+
+Crear una nueva migración:
+
+```bash
+npx prisma migrate dev --name <nombre-migracion>
+```
+
+## Estructura del proyecto
+
+```
+src/
+├── auth/              → login, JWT, guards de rol
+├── users/              → gestión de empleados
+├── conversations/      → orquesta el flujo de diagnóstico
+├── retrieval/           → búsqueda semántica sobre productos y base de conocimiento
+├── embeddings/           → generación de representaciones semánticas
+├── gemini/                → generación de respuestas con IA
+├── prompt-builder/        → construcción del contexto para el modelo
+├── health/                → estado del servicio
+└── prisma/                → conexión a base de datos
+```
+
+## Documentación técnica
+
+El detalle de implementación (decisiones de configuración, flujo interno del motor y notas de desarrollo) vive en `CLAUDE.md`.
