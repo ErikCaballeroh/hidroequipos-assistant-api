@@ -50,10 +50,16 @@ No cambiar el modelo asignado a una tarea sin que el equipo lo apruebe explícit
 | Tarea | Modelo | Servicio |
 |---|---|---|
 | Embeddings (productos, base de conocimiento, consultas) | `gemini-embedding-001` (salida truncada a 768 dimensiones) | `EmbeddingsService` |
-| Condensación de consulta con historial | `gemini-2.5-flash-lite` | `ConversationService.condensarConsulta()` |
-| Generación del diagnóstico final | `gemini-2.5-flash` | `GeminiService` |
+| Condensación de consulta con historial | `gemini-3.5-flash-lite` | `ConversationService.condensarConsulta()` |
+| Generación del diagnóstico final | `gemini-3.5-flash-lite` | `GeminiService` |
+
+**Las dos tareas usan el mismo modelo (`gemini-3.5-flash-lite`), no es un error.** Originalmente se planeó usar `gemini-3.5-flash` (sin "lite") para la generación del diagnóstico, por tener más capacidad de razonamiento. Pero la cuota real de la capa gratuita para `gemini-3.5-flash` (y para casi todos los modelos "Flash" normales de cualquier generación) es de solo **20 peticiones por día** — inviable incluso para que el equipo pruebe la app. `gemini-3.5-flash-lite` tiene 500 peticiones/día, 25 veces más. No cambiar esto a `gemini-3.5-flash` sin confirmar antes, en Google AI Studio, que la cuenta del proyecto tiene una cuota mayor que esa.
 
 Los modelos "Pro" de Gemini son de pago — no usarlos por defecto en ningún flujo sin que el equipo lo decida explícitamente, ya que rompería el supuesto de costo de todo el proyecto.
+
+⚠️ **Los nombres de modelo de Gemini cambian con más frecuencia de lo normal.** Google ha estado restringiendo el acceso a modelos de la generación 2.5 para API keys/proyectos nuevos de forma inconsistente (un modelo puede fallar con 404 mientras otro de la misma generación sigue funcionando), incluso sin fecha de deprecación anunciada. Si cualquiera de los modelos de la tabla empieza a fallar con `404 "no longer available to new users"`, el mensaje de error de la propia API normalmente ya incluye el modelo de reemplazo recomendado —úsalo, y actualiza esta tabla y el código en el mismo cambio. No asumas que la capa gratuita de un modelo nuevo es igual a la del anterior; confírmalo en Google AI Studio antes de depender de él en producción.
+
+Nota aparte: Google está empujando una API nueva ("Interactions API", `/v1beta/interactions`) como la forma recomendada hacia adelante para los modelos más recientes, en vez del `generateContent` que usa este proyecto. Por ahora `generateContent` sigue funcionando y no hay razón para migrar a mitad de proyecto, pero es una migración a considerar más adelante si el equipo decide modernizar la integración.
 
 ## Arquitectura y estructura de módulos
 
@@ -77,12 +83,12 @@ src/
 
 1. Guardar mensaje del empleado (`role: 'user'`).
 2. Traer las últimas 6 entradas del historial de la conversación.
-3. Si hay historial, condensar la consulta con `gemini-2.5-flash-lite` (query rewriting).
+3. Si hay historial, condensar la consulta con `gemini-3.5-flash-lite` (query rewriting).
 4. Generar embedding de la consulta condensada.
 5. Buscar en paralelo (`Promise.all`) contra `products` y `knowledge_base` por distancia coseno.
 6. Comparar la mejor distancia contra el umbral de confianza (`CONFIDENCE_THRESHOLD`, configurable por env, valor de partida `0.6`). Si es peor, usar el prompt de "sin match" en vez del normal.
 7. Construir el prompt final (instrucciones + historial + contexto recuperado + pregunta).
-8. Llamar a `gemini-2.5-flash`; registrar el intento en `gemini_logs` (éxito/error/latencia) sin importar el resultado.
+8. Llamar a `gemini-3.5-flash-lite`; registrar el intento en `gemini_logs` (éxito/error/latencia) sin importar el resultado.
 9. Guardar la respuesta en `messages`.
 10. Si hubo contexto suficiente, insertar las filas de trazabilidad en `message_product` y `message_knowledge` — **esto ocurre siempre después de guardar el mensaje, nunca antes ni en paralelo**.
 
@@ -97,6 +103,7 @@ src/
 - Desde Prisma 7, el seeding **nunca** se dispara automáticamente (ni con `migrate dev` ni con `migrate reset`, con o sin banderas) — solo corre con `npx prisma db seed` explícito.
 - **Todo import relativo (`./` o `../`) debe llevar extensión `.js` explícita**, aunque el archivo fuente sea `.ts` — es un requisito de TypeScript en modo ESM (`moduleResolution: "nodenext"`/`"node16"`), no un error. Ejemplo: `import { PrismaService } from '../prisma/prisma.service.js';`, no `'../prisma/prisma.service'`. Esto aplica a todos los imports relativos del proyecto (servicios, guards, DTOs, el cliente de Prisma generado), no solo a uno en particular. Los imports de paquetes (`@nestjs/common`, `@prisma/adapter-pg`, etc.) no llevan `.js`, esta regla es solo para rutas relativas.
 - **El `generator client` de `schema.prisma` requiere `output` explícito** (`provider = "prisma-client"`, `output = "../src/generated/prisma"`) — el cliente ya no se genera en `node_modules/@prisma/client`. Por eso, en todo el código, `PrismaClient` se importa desde `../generated/prisma/client` (ruta relativa según la ubicación del archivo), **nunca** desde `'@prisma/client'` directamente — ese import falla con "no exported member 'PrismaClient'".
+- **`src/generated/prisma/` está en `.gitignore`** (es código generado). Cualquier entorno con checkout limpio (CI, un deploy, una máquina nueva del equipo) necesita correr `npx prisma generate` explícitamente antes de compilar o testear — si no, falla con `Cannot find module '../generated/prisma/client.js'`. Además, `prisma generate` necesita que `DATABASE_URL`/`DIRECT_URL` existan como variables de entorno para que `prisma.config.ts` cargue (aunque no haga falta una conexión real) — en CI, usar valores falsos (`postgresql://user:pass@localhost:5432/dummy`) es suficiente.
 - Cada vez que se genera una migración con `prisma migrate dev` que toque estas tablas, **revisa el SQL generado a mano**: Prisma no agrega `CREATE EXTENSION IF NOT EXISTS vector;` ni los índices `ivfflat` (`vector_cosine_ops`) automáticamente — hay que añadirlos manualmente al archivo de migración antes de aplicarla.
 - Tablas de trazabilidad (`message_product`, `message_knowledge`) tienen llave primaria compuesta — nunca se actualizan, solo se insertan (son un log de auditoría, no un estado editable).
 
