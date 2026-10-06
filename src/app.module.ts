@@ -10,6 +10,7 @@ import { GeminiModule } from './gemini/gemini.module.js';
 import { RetrievalModule } from './retrieval/retrieval.module.js';
 import { PromptBuilderModule } from './prompt-builder/prompt-builder.module.js';
 import { ConversationsModule } from './conversations/conversations.module.js';
+import { QueryTemplatesModule } from './query-templates/query-templates.module.js';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConversationsModule } from './conversations/conversations.module.js';
     RetrievalModule,
     PromptBuilderModule,
     ConversationsModule,
+    QueryTemplatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
