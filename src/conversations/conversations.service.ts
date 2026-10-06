@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { GeminiService } from '../gemini/gemini.service.js';
 import { RetrievalService } from '../retrieval/retrieval.service.js';
@@ -8,6 +8,7 @@ import type { Message } from '../generated/prisma/client.js';
 @Injectable()
 export class ConversationsService {
     private readonly MAX_HISTORIAL = 6;
+    private readonly LONGITUD_TITULO = 60;
 
     constructor(
         private readonly prisma: PrismaService,
@@ -27,14 +28,17 @@ export class ConversationsService {
         });
     }
 
-    listarMensajes(conversationId: number) {
+    async listarMensajes(conversationId: number, userId: number) {
+        await this.verificarPropiedad(conversationId, userId);
         return this.prisma.message.findMany({
             where: { conversationId },
             orderBy: { createdAt: 'asc' },
         });
     }
 
-    async procesarMensaje(conversationId: number, textoUsuario: string) {
+    async procesarMensaje(conversationId: number, userId: number, textoUsuario: string) {
+        const conversation = await this.verificarPropiedad(conversationId, userId);
+
         const historial = await this.prisma.message.findMany({
             where: { conversationId },
             orderBy: { createdAt: 'desc' },
@@ -46,20 +50,39 @@ export class ConversationsService {
             data: { conversationId, role: 'user', content: textoUsuario },
         });
 
-        const consultaCondensada = await this.condensarConsulta(historial, textoUsuario);
-        const contexto = await this.retrievalService.buscarContexto(consultaCondensada);
-        const prompt = this.promptBuilder.construir(historial, textoUsuario, contexto);
-        const respuesta = await this.geminiService.generar(prompt, 'gemini-3.5-flash-lite');
+        if (!conversation.title) {
+            await this.prisma.conversation.update({
+                where: { id: conversationId },
+                data: { title: textoUsuario.slice(0, this.LONGITUD_TITULO) },
+            });
+        }
+
+        let contexto: Awaited<ReturnType<RetrievalService['buscarContexto']>>;
+        let respuesta: string;
+        const inicio = Date.now();
+        try {
+            const consultaCondensada = await this.condensarConsulta(historial, textoUsuario);
+            contexto = await this.retrievalService.buscarContexto(consultaCondensada);
+            const prompt = this.promptBuilder.construir(historial, textoUsuario, contexto);
+            respuesta = await this.geminiService.generar(prompt, 'gemini-3.5-flash-lite');
+        } catch {
+            throw new ServiceUnavailableException(
+                'El servicio de diagnóstico no está disponible en este momento. Intenta de nuevo en unos minutos.',
+            );
+        }
+        const responseTimeMs = Date.now() - inicio;
 
         const mensajeAsistente = await this.prisma.message.create({
             data: {
                 conversationId,
                 role: 'assistant',
                 content: respuesta,
-                bestMatchDistance: contexto.mejorDistancia,
+                bestMatchDistance: Number.isFinite(contexto.mejorDistancia) ? contexto.mejorDistancia : null,
+                responseTimeMs,
             },
         });
 
+        const sources = { products: [] as any[], knowledge: [] as any[] };
         if (contexto.hayContextoSuficiente) {
             await this.prisma.messageProduct.createMany({
                 data: contexto.productos.map((p: any) => ({
@@ -75,9 +98,35 @@ export class ConversationsService {
                     similarityDistance: a.distance,
                 })),
             });
+
+            sources.products = contexto.productos.map((p: any) => ({
+                id: p.id,
+                sku: p.sku,
+                name: p.name,
+                distance: p.distance,
+                similarity: this.redondearSimilitud(p.distance),
+            }));
+            sources.knowledge = contexto.articulos.map((a: any) => ({
+                id: a.id,
+                title: a.title,
+                distance: a.distance,
+                similarity: this.redondearSimilitud(a.distance),
+            }));
         }
 
-        return mensajeAsistente;
+        return { message: mensajeAsistente, sources };
+    }
+
+    private redondearSimilitud(distance: number): number {
+        return Math.round((1 - distance) * 100) / 100;
+    }
+
+    private async verificarPropiedad(conversationId: number, userId: number) {
+        const conversation = await this.prisma.conversation.findUnique({ where: { id: conversationId } });
+        if (!conversation || conversation.userId !== userId) {
+            throw new NotFoundException('Conversación no encontrada');
+        }
+        return conversation;
     }
 
     private async condensarConsulta(historial: Message[], mensajeNuevo: string): Promise<string> {

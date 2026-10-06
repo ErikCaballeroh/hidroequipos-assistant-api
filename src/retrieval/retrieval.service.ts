@@ -25,7 +25,7 @@ export class RetrievalService {
 
         const [productos, articulos] = await Promise.all([
             this.prisma.$queryRaw<any[]>`
-        SELECT id, name, description, price, stock, embedding <=> ${vectorSql}::vector AS distance
+        SELECT id, sku, name, description, price, stock, embedding <=> ${vectorSql}::vector AS distance
         FROM products WHERE active = TRUE ORDER BY distance ASC LIMIT ${this.TOP_K}
       `,
             this.prisma.$queryRaw<any[]>`
