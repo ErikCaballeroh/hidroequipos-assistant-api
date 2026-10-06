@@ -11,6 +11,7 @@ import { RetrievalModule } from './retrieval/retrieval.module.js';
 import { PromptBuilderModule } from './prompt-builder/prompt-builder.module.js';
 import { ConversationsModule } from './conversations/conversations.module.js';
 import { QueryTemplatesModule } from './query-templates/query-templates.module.js';
+import { FeedbackModule } from './feedback/feedback.module.js';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { QueryTemplatesModule } from './query-templates/query-templates.module.j
     PromptBuilderModule,
     ConversationsModule,
     QueryTemplatesModule,
+    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [AppService],
