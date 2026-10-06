@@ -28,7 +28,28 @@ export class AuthService {
         };
     }
 
-    async cambiarPassword(userId: number, nuevaPassword: string) {
+    async obtenerPerfil(userId: number) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, name: true, email: true, role: true },
+        });
+        if (!user) {
+            throw new UnauthorizedException('Usuario no encontrado');
+        }
+        return user;
+    }
+
+    async cambiarPassword(userId: number, passwordActual: string, nuevaPassword: string) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new UnauthorizedException('Usuario no encontrado');
+        }
+
+        const passwordActualValida = await bcrypt.compare(passwordActual, user.passwordHash);
+        if (!passwordActualValida) {
+            throw new UnauthorizedException('Contraseña actual incorrecta');
+        }
+
         const passwordHash = await bcrypt.hash(nuevaPassword, 10);
         await this.prisma.user.update({
             where: { id: userId },
