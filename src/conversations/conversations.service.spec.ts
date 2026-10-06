@@ -157,5 +157,17 @@ describe('ConversationsService', () => {
 
       expect(resultado).toEqual([{ id: 1 }]);
     });
+
+    it('includes each message own feedback', async () => {
+      prisma.conversation.findUnique.mockResolvedValue({ id: 1, userId: 1, title: null });
+
+      await service.listarMensajes(1, 1);
+
+      expect(prisma.message.findMany).toHaveBeenCalledWith({
+        where: { conversationId: 1 },
+        orderBy: { createdAt: 'asc' },
+        include: { feedback: true },
+      });
+    });
   });
 });

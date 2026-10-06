@@ -1,3 +1,5 @@
+import { FeedbackEntity } from '../../feedback/entities/feedback.entity.js';
+
 export class MessageEntity {
     id: number;
     conversationId: number;
@@ -6,4 +8,5 @@ export class MessageEntity {
     bestMatchDistance: number | null;
     responseTimeMs: number | null;
     createdAt: Date;
+    feedback?: FeedbackEntity | null;
 }

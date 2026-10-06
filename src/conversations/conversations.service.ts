@@ -33,6 +33,7 @@ export class ConversationsService {
         return this.prisma.message.findMany({
             where: { conversationId },
             orderBy: { createdAt: 'asc' },
+            include: { feedback: true },
         });
     }
 
