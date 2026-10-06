@@ -5,6 +5,7 @@ import { ConversationsService } from './conversations.service.js';
 import { SendMessageDto } from './dto/send-message.dto.js';
 import { ConversationEntity } from './entities/conversation.entity.js';
 import { MessageEntity } from './entities/message.entity.js';
+import { SendMessageResponseEntity } from './entities/send-message-response.entity.js';
 
 @ApiTags('conversations')
 @ApiBearerAuth()
@@ -26,14 +27,14 @@ export class ConversationsController {
     }
 
     @Post(':id/messages')
-    @ApiOkResponse({ type: MessageEntity })
-    sendMessage(@Param('id') id: string, @Body() dto: SendMessageDto) {
-        return this.conversationsService.procesarMensaje(+id, dto.content);
+    @ApiOkResponse({ type: SendMessageResponseEntity })
+    sendMessage(@Param('id') id: string, @Body() dto: SendMessageDto, @Req() req: any) {
+        return this.conversationsService.procesarMensaje(+id, req.user.userId, dto.content);
     }
 
     @Get(':id/messages')
     @ApiOkResponse({ type: MessageEntity, isArray: true })
-    getMessages(@Param('id') id: string) {
-        return this.conversationsService.listarMensajes(+id);
+    getMessages(@Param('id') id: string, @Req() req: any) {
+        return this.conversationsService.listarMensajes(+id, req.user.userId);
     }
 }
