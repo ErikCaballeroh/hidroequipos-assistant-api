@@ -118,7 +118,7 @@ curl http://localhost:3001/api/health
 Con el servidor corriendo (y `NODE_ENV` distinto de `production`), la documentación OpenAPI está disponible en:
 
 ```
-http://localhost:3001/docs
+http://localhost:3001/api/docs
 ```
 
 ## Autenticación
