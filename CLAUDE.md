@@ -118,6 +118,7 @@ src/
 
 - Reglas por defecto de NestJS/oxlint/Prettier — sin reglas adicionales estrictas por ahora.
 - Todo endpoint que recibe body usa un DTO validado con `class-validator`/`class-transformer`. No aceptar payloads sin tipar.
+- Todo endpoint nuevo debe usar clases DTO para sus entradas, llevar `@ApiTags`, `@ApiBearerAuth` si es protegido y `@ApiOkResponse` con una clase de respuesta. Los DTOs deben terminar en `.dto.ts`.
 - Los servicios que llaman a Gemini (`GeminiService`, `EmbeddingsService`) deben ser mockeables en tests — no hardcodear la llamada HTTP directamente en otros servicios, siempre pasar por estos wrappers.
 - Variables de entorno sensibles (`GEMINI_API_KEY`, `DATABASE_URL`, `JWT_SECRET`) solo en `.env`, nunca en el código ni en commits. Ver `.env.example` para la lista completa de variables esperadas.
 
