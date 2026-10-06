@@ -105,12 +105,20 @@ npx prisma db seed
 pnpm run start:dev
 ```
 
-La API queda disponible en `http://localhost:3001`.
+La API queda disponible en `http://localhost:3001`. Todas las rutas están bajo el prefijo `/api` (ej. `http://localhost:3001/api/health`).
 
 ### Verificación rápida
 
 ```bash
-curl http://localhost:3001/health
+curl http://localhost:3001/api/health
+```
+
+### Documentación interactiva (Swagger)
+
+Con el servidor corriendo (y `NODE_ENV` distinto de `production`), la documentación OpenAPI está disponible en:
+
+```
+http://localhost:3001/api/docs
 ```
 
 ## Autenticación
@@ -121,11 +129,11 @@ Las rutas protegidas requieren el header:
 Authorization: Bearer <token>
 ```
 
-El token se obtiene en `/auth/login`. Su duración se configura con `JWT_EXPIRES_IN`.
+El token se obtiene en `/api/auth/login`. Su duración se configura con `JWT_EXPIRES_IN`.
 
 ## Endpoints
 
-Base path: `/`
+Base path: `/api`
 
 ### Auth
 
