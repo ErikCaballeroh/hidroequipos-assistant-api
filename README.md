@@ -84,7 +84,8 @@ npx prisma db seed
 | `JWT_SECRET` | Secreto para firmar y verificar tokens JWT | Sí |
 | `JWT_EXPIRES_IN` | Duración del token (ej. `8h`) | Recomendado |
 | `CONFIDENCE_THRESHOLD` | Umbral de similitud mínima para considerar que hay contexto suficiente | Recomendado |
-| `PORT` | Puerto del servidor | Opcional |
+| `PORT` | Puerto del servidor (default `3001`, para liberar el 3000 a `next dev`) | Opcional |
+| `FRONTEND_URL` | Origen permitido por CORS para el frontend | Sí |
 
 ## Scripts
 
@@ -104,12 +105,12 @@ npx prisma db seed
 pnpm run start:dev
 ```
 
-La API queda disponible en `http://localhost:3000`.
+La API queda disponible en `http://localhost:3001`.
 
 ### Verificación rápida
 
 ```bash
-curl http://localhost:3000/health
+curl http://localhost:3001/health
 ```
 
 ## Autenticación
