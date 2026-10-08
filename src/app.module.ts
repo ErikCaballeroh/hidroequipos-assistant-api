@@ -14,6 +14,7 @@ import { QueryTemplatesModule } from './query-templates/query-templates.module.j
 import { FeedbackModule } from './feedback/feedback.module.js';
 import { ProductsModule } from './products/products.module.js';
 import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module.js';
+import { AdminModule } from './admin/admin.module.js';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module.js';
     FeedbackModule,
     ProductsModule,
     KnowledgeBaseModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
