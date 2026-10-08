@@ -5,14 +5,15 @@ import { EmbeddingsService } from '../embeddings/embeddings.service.js';
 @Injectable()
 export class RetrievalService {
     private readonly UMBRAL_CONFIANZA = Number(process.env.CONFIDENCE_THRESHOLD ?? 0.6);
-    // TODO: TOP_K=5 es insuficiente con catálogos que tienen muchas variantes
-    // por tamaño (ej. Alguicida x4, Tricloro x20). Una consulta fuerte hacia una
-    // familia de producto puede llenar todo el TOP_K con esa familia y dejar
-    // fuera productos complementarios relevantes (ej. "algas" trae solo
-    // Alguicida, sin Shock/Tricloro, aunque knowledge_base diga que van juntos).
-    // Opciones a evaluar: subir TOP_K, o deduplicar por nombre base de producto
-    // antes de construir el prompt.
-    private readonly TOP_K = 5;
+    // Subido de 5 a 10: con TOP_K=5, una familia de producto con varias
+    // variantes por tamaño (ej. Alguicida x4) podía llenar todo el TOP_K y
+    // dejar fuera productos complementarios relevantes (ej. "algas" traía
+    // solo Alguicida, sin Shock/Tricloro, aunque knowledge_base diga que van
+    // juntos). Deduplicar por nombre base se descartó: el patrón de variantes
+    // no es uniforme entre categorías (el tamaño va al final en químicos, pero
+    // en bombeo el voltaje aparece en medio del nombre), así que un regex
+    // genérico de "nombre base" sería frágil y agruparía mal.
+    private readonly TOP_K = 10;
 
     constructor(
         private readonly prisma: PrismaService,
