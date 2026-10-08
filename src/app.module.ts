@@ -12,6 +12,8 @@ import { PromptBuilderModule } from './prompt-builder/prompt-builder.module.js';
 import { ConversationsModule } from './conversations/conversations.module.js';
 import { QueryTemplatesModule } from './query-templates/query-templates.module.js';
 import { FeedbackModule } from './feedback/feedback.module.js';
+import { ProductsModule } from './products/products.module.js';
+import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module.js';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { FeedbackModule } from './feedback/feedback.module.js';
     ConversationsModule,
     QueryTemplatesModule,
     FeedbackModule,
+    ProductsModule,
+    KnowledgeBaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
