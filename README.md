@@ -26,11 +26,13 @@ La API organiza la lógica en los siguientes módulos:
 
 - Autenticación y reseteo de contraseña gestionado por supervisores
 - Usuarios con roles (empleado / supervisor)
-- Conversaciones y mensajes del chat de diagnóstico
+- Conversaciones y mensajes del chat de diagnóstico, con fuentes citadas y título automático
 - Motor de recuperación semántica (embeddings + búsqueda vectorial)
 - Generación de diagnósticos con IA sobre contexto real del catálogo
-- Catálogo de productos y base de conocimiento técnico *(en desarrollo)*
-- Feedback y métricas de uso *(en desarrollo)*
+- Catálogo de productos y base de conocimiento técnico (administración por supervisores)
+- Feedback (👍/👎) por mensaje
+- Atajos de consulta frecuente (query templates)
+- Métricas, salud de la API de Gemini y trazabilidad de respuestas, solo para supervisores
 
 ## Requisitos
 
@@ -140,6 +142,8 @@ Base path: `/api`
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
 | POST | `/auth/login` | Inicia sesión, devuelve un token | Público |
+| GET | `/auth/me` | Perfil del usuario autenticado | Autenticado |
+| POST | `/auth/change-password` | Cambia la contraseña propia (valida la actual) | Autenticado |
 
 ### Users
 
@@ -157,24 +161,57 @@ Base path: `/api`
 | --- | --- | --- | --- |
 | POST | `/conversations` | Crea una conversación | Autenticado |
 | GET | `/conversations` | Lista las conversaciones del usuario actual | Autenticado |
-| POST | `/conversations/:id/messages` | Envía un mensaje y recibe un diagnóstico | Autenticado |
-| GET | `/conversations/:id/messages` | Lista los mensajes de una conversación | Autenticado |
+| POST | `/conversations/:id/messages` | Envía un mensaje y recibe un diagnóstico con fuentes (`sources`) | Autenticado (404 si la conversación no es propia) |
+| GET | `/conversations/:id/messages` | Lista los mensajes de una conversación, con su feedback propio | Autenticado (404 si la conversación no es propia) |
+
+### Feedback
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| POST | `/messages/:id/feedback` | Califica una respuesta (`like`/`dislike`), upsert por mensaje | Autenticado |
+| DELETE | `/messages/:id/feedback` | Elimina el feedback propio de una respuesta | Autenticado |
+
+### Query templates
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| GET | `/query-templates` | Lista las plantillas activas, por `displayOrder` | Autenticado |
+| POST | `/query-templates` | Crea una plantilla | Supervisor |
+| PATCH | `/query-templates/:id` | Edita una plantilla | Supervisor |
+| DELETE | `/query-templates/:id` | Elimina una plantilla | Supervisor |
+
+### Products
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| GET | `/products` | Lista el catálogo (todos, activos e inactivos) | Supervisor |
+| POST | `/products` | Crea un producto (regenera el embedding) | Supervisor |
+| PATCH | `/products/:id` | Edita un producto (regenera el embedding si cambia `name`/`description`) | Supervisor |
+| DELETE | `/products/:id` | Baja lógica (`active=false`), nunca borra físicamente | Supervisor |
+
+### Knowledge base
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| GET | `/knowledge-base` | Lista los artículos | Supervisor |
+| POST | `/knowledge-base` | Crea un artículo (regenera el embedding) | Supervisor |
+| PATCH | `/knowledge-base/:id` | Edita un artículo (regenera el embedding si cambia `title`/`description`) | Supervisor |
+| DELETE | `/knowledge-base/:id` | Elimina el artículo; `409` si está referenciado en la traza de mensajes existentes | Supervisor |
+
+### Admin
+
+| Método | Ruta | Descripción | Acceso |
+| --- | --- | --- | --- |
+| GET | `/admin/stats` | Productos más consultados, feedback y mensajes sin match (`?from=&to=`, default últimos 30 días) | Supervisor |
+| GET | `/admin/gemini-logs` | Historial de llamadas a Gemini, paginado (`?page=&pageSize=&success=`) | Supervisor |
+| GET | `/admin/messages` | Listado paginado de mensajes del asistente (`?feedback=&noMatch=&page=&pageSize=`) | Supervisor |
+| GET | `/admin/messages/:id/trace` | Traza completa de una respuesta (pregunta, feedback, productos y artículos usados) | Supervisor |
 
 ### Health
 
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
 | GET | `/health` | Estado del servicio y de la conexión a base de datos | Público |
-
-### Módulos planeados
-
-| Módulo | Rutas | Descripción |
-| --- | --- | --- |
-| Feedback | `POST/DELETE /messages/:id/feedback` | Calificación de respuestas |
-| Products | `GET/POST/PATCH/DELETE /products` | Administración del catálogo |
-| Knowledge base | `GET/POST/PATCH/DELETE /knowledge-base` | Administración de la base de conocimiento |
-| Query templates | `GET/POST/PATCH/DELETE /query-templates` | Atajos de consulta rápida |
-| Admin | `GET /admin/gemini-logs`, `GET /admin/stats` | Monitoreo y métricas |
 
 ## Detalle de endpoints
 
@@ -199,7 +236,19 @@ Base path: `/api`
 }
 ```
 
-La respuesta incluye el diagnóstico generado, la distancia de confianza del mejor resultado encontrado, y queda ligada a los productos y artículos que la respaldaron.
+Respuesta:
+
+```json
+{
+  "message": { "id": 91, "role": "assistant", "content": "...", "bestMatchDistance": 0.18, "responseTimeMs": 2800 },
+  "sources": {
+    "products": [{ "id": 3, "sku": "QUI-002", "name": "...", "distance": 0.21, "similarity": 0.79 }],
+    "knowledge": [{ "id": 2, "title": "...", "distance": 0.25, "similarity": 0.75 }]
+  }
+}
+```
+
+`similarity = 1 - distance`, redondeada a 2 decimales. Si no hay contexto suficiente (`bestMatchDistance` por encima de `CONFIDENCE_THRESHOLD`, o `null`), `sources` viene vacío. Fallas de Gemini (429, 503, timeout) responden `503` con un mensaje claro, y quedan registradas en `gemini_logs`.
 
 ## Modelo de datos
 
@@ -232,15 +281,20 @@ npx prisma migrate dev --name <nombre-migracion>
 
 ```
 src/
-├── auth/              → login, JWT, guards de rol
+├── auth/              → login, JWT, guards de rol, perfil y cambio de contraseña
 ├── users/              → gestión de empleados
-├── conversations/      → orquesta el flujo de diagnóstico
+├── conversations/      → orquesta el flujo de diagnóstico, fuentes y títulos
 ├── retrieval/           → búsqueda semántica sobre productos y base de conocimiento
 ├── embeddings/           → generación de representaciones semánticas
 ├── gemini/                → generación de respuestas con IA
 ├── prompt-builder/        → construcción del contexto para el modelo
-├── health/                → estado del servicio
-└── prisma/                → conexión a base de datos
+├── feedback/               → 👍/👎 por mensaje
+├── query-templates/        → atajos de consulta frecuente
+├── products/                → administración del catálogo
+├── knowledge-base/           → administración de la base de conocimiento
+├── admin/                     → métricas, salud de Gemini y trazabilidad
+├── health/                     → estado del servicio
+└── prisma/                      → conexión a base de datos
 ```
 
 ## Documentación técnica
