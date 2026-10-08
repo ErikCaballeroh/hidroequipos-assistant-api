@@ -76,7 +76,7 @@ src/
 ├── knowledge-base/      → CRUD de la base de conocimiento (regenera embedding al editar)
 ├── feedback/             → 👍/👎 por mensaje
 ├── query-templates/      → CRUD de atajos de "consultas frecuentes"
-└── admin/                → gemini-logs y métricas, solo supervisor
+└── admin/                → stats, gemini-logs y trazabilidad de mensajes, solo supervisor
 ```
 
 ## Flujo RAG (orden exacto, no alterar sin razón)
@@ -86,7 +86,7 @@ src/
 3. Si hay historial, condensar la consulta con `gemini-3.5-flash-lite` (query rewriting).
 4. Generar embedding de la consulta condensada.
 5. Buscar en paralelo (`Promise.all`) contra `products` y `knowledge_base` por distancia coseno.
-6. Comparar la mejor distancia contra el umbral de confianza (`CONFIDENCE_THRESHOLD`, configurable por env, valor de partida `0.6`). Si es peor, usar el prompt de "sin match" en vez del normal.
+6. Comparar la mejor distancia contra el umbral de confianza (`CONFIDENCE_THRESHOLD`, configurable por env). Si es peor, usar el prompt de "sin match" en vez del normal. Valor calibrado con preguntas reales: `0.35` (similitud mínima aceptada ≈65%) — preguntas de alberca reales dieron distancias de 0.17–0.31, preguntas fuera de dominio dieron 0.47–0.53, dejando margen holgado en ambos lados. No es un valor arbitrario; si se recalibra, repetir ese mismo ejercicio con preguntas reales en vez de solo ajustar el número.
 7. Construir el prompt final (instrucciones + historial + contexto recuperado + pregunta).
 8. Llamar a `gemini-3.5-flash-lite`; registrar el intento en `gemini_logs` (éxito/error/latencia) sin importar el resultado.
 9. Guardar la respuesta en `messages`.
@@ -111,6 +111,7 @@ src/
 ## Autenticación y roles
 
 - Dos roles: `employee` y `supervisor`. Los guards de rol se aplican con un decorador (`@Roles('supervisor')`) sobre los endpoints de administración (catálogo, base de conocimiento, plantillas, usuarios, métricas, logs).
+- **`RolesGuard` solo reconoce `@Roles()` vía `reflector.getAllAndOverride('roles', [context.getHandler(), context.getClass()])`.** Si se simplifica a solo `getHandler()`, un `@Roles('supervisor')` puesto a nivel de controlador (como en `UsersController`, `ProductsController`, `KnowledgeBaseController`) deja de aplicarse en silencio — cualquier empleado autenticado podría entrar sin que ningún test lo detecte a simple vista. Esto ya pasó una vez (ver PR de la Fase 5); si tocas este guard, vuelve a probar manualmente con un usuario `employee` contra al menos un endpoint de cada controlador que use `@Roles` a nivel de clase.
 - **El reseteo de contraseña lo hace el supervisor manualmente, no hay flujo de correo electrónico.** `POST /users/:id/reset-password` genera una contraseña temporal, la devuelve una sola vez en la respuesta (nunca se persiste en texto plano ni se loguea), y marca `mustChangePassword: true` en el usuario para forzar el cambio en el siguiente login.
 - No implementar registro público ni recuperación de contraseña por email — está fuera del alcance del proyecto intencionalmente.
 
@@ -126,10 +127,6 @@ src/
 
 - Mockear `GeminiService` y `EmbeddingsService` en tests unitarios y e2e — no consumir la cuota real de la API de Gemini durante CI.
 - Los tests del `RetrievalService` deben cubrir explícitamente el caso de umbral de confianza superado (sin match), no solo el caso feliz.
-
-## Pendientes conocidos (no bloqueantes)
-
-- **`TOP_K=5` en `RetrievalService` es insuficiente para catálogos con muchas variantes por tamaño.** Confirmado con el catálogo real (147 productos): una consulta sobre algas trajo solo variantes de Alguicida en el `TOP_K`, sin ningún producto de Shock Dicloro/Tricloro, aunque `knowledge_base` indica que ambos se usan juntos para ese tratamiento. El sistema funciona correctamente en lo demás (retrieval, umbral de confianza, trazabilidad) — esto es una afinación de calidad pendiente, no un bug bloqueante. Opciones a evaluar: subir `TOP_K`, o deduplicar por nombre base de producto antes de construir el prompt. Ver el comentario `TODO` en `src/retrieval/retrieval.service.ts`.
 
 ## Cosas que Claude Code NO debe hacer en este repo
 
