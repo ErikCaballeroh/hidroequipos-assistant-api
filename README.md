@@ -149,7 +149,7 @@ Base path: `/api`
 
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
-| GET | `/users` | Lista los empleados | Supervisor |
+| GET | `/users` | Lista los empleados, paginada (`?search=&page=&pageSize=`) | Supervisor |
 | POST | `/users` | Crea un empleado | Supervisor |
 | PATCH | `/users/:id` | Edita rol o estado de un empleado | Supervisor |
 | POST | `/users/:id/reset-password` | Resetea la contraseña de un empleado | Supervisor |
@@ -175,7 +175,7 @@ Base path: `/api`
 
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
-| GET | `/query-templates` | Lista las plantillas activas, por `displayOrder` | Autenticado |
+| GET | `/query-templates` | Lista las plantillas activas, por `displayOrder`, paginada (`?search=&page=&pageSize=`) | Autenticado |
 | POST | `/query-templates` | Crea una plantilla | Supervisor |
 | PATCH | `/query-templates/:id` | Edita una plantilla | Supervisor |
 | DELETE | `/query-templates/:id` | Elimina una plantilla | Supervisor |
@@ -184,7 +184,7 @@ Base path: `/api`
 
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
-| GET | `/products` | Lista el catálogo (todos, activos e inactivos) | Supervisor |
+| GET | `/products` | Lista el catálogo (todos, activos e inactivos), paginada (`?search=&page=&pageSize=`) | Supervisor |
 | POST | `/products` | Crea un producto (regenera el embedding) | Supervisor |
 | PATCH | `/products/:id` | Edita un producto (regenera el embedding si cambia `name`/`description`) | Supervisor |
 | DELETE | `/products/:id` | Baja lógica (`active=false`), nunca borra físicamente | Supervisor |
@@ -193,7 +193,7 @@ Base path: `/api`
 
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
-| GET | `/knowledge-base` | Lista los artículos | Supervisor |
+| GET | `/knowledge-base` | Lista los artículos, paginada (`?search=&page=&pageSize=`) | Supervisor |
 | POST | `/knowledge-base` | Crea un artículo (regenera el embedding) | Supervisor |
 | PATCH | `/knowledge-base/:id` | Edita un artículo (regenera el embedding si cambia `title`/`description`) | Supervisor |
 | DELETE | `/knowledge-base/:id` | Elimina el artículo; `409` si está referenciado en la traza de mensajes existentes | Supervisor |
@@ -212,6 +212,22 @@ Base path: `/api`
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
 | GET | `/health` | Estado del servicio y de la conexión a base de datos | Público |
+
+## Listados paginados
+
+`GET /users`, `GET /products`, `GET /knowledge-base` y `GET /query-templates` siempre devuelven la misma forma paginada, igual que `/admin/gemini-logs` y `/admin/messages`:
+
+```json
+{
+  "items": [ /* ... */ ],
+  "page": 1,
+  "pageSize": 20,
+  "total": 57
+}
+```
+
+- `page` (default `1`) y `pageSize` (default `20`) son opcionales.
+- `search` (opcional) filtra por el/los campos relevantes de cada entidad (`name`/`email` en users, `name`/`sku` en products, `title` en knowledge-base, `title`/`queryText` en query-templates), sin distinguir mayúsculas/minúsculas.
 
 ## Detalle de endpoints
 
