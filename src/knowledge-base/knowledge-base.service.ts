@@ -4,6 +4,7 @@ import { EmbeddingsService } from '../embeddings/embeddings.service.js';
 import { Prisma } from '../generated/prisma/client.js';
 import { CreateKnowledgeBaseDto } from './dto/create-knowledge-base.dto.js';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto.js';
+import { FindKnowledgeBaseQueryDto } from './dto/find-knowledge-base-query.dto.js';
 
 @Injectable()
 export class KnowledgeBaseService {
@@ -12,8 +13,22 @@ export class KnowledgeBaseService {
         private readonly embeddingsService: EmbeddingsService,
     ) { }
 
-    findAll() {
-        return this.prisma.knowledgeBase.findMany({ orderBy: { id: 'asc' } });
+    async findAll(query: FindKnowledgeBaseQueryDto) {
+        const where = query.search
+            ? { title: { contains: query.search, mode: 'insensitive' as const } }
+            : undefined;
+
+        const [items, total] = await Promise.all([
+            this.prisma.knowledgeBase.findMany({
+                where,
+                orderBy: { id: 'asc' },
+                skip: (query.page - 1) * query.pageSize,
+                take: query.pageSize,
+            }),
+            this.prisma.knowledgeBase.count({ where }),
+        ]);
+
+        return { items, page: query.page, pageSize: query.pageSize, total };
     }
 
     async create(dto: CreateKnowledgeBaseDto) {
