@@ -7,6 +7,7 @@ describe('QueryTemplatesController', () => {
   let controller: QueryTemplatesController;
   let service: {
     listarActivas: ReturnType<typeof vi.fn>;
+    listarTodas: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
     remove: ReturnType<typeof vi.fn>;
@@ -15,6 +16,7 @@ describe('QueryTemplatesController', () => {
   beforeEach(async () => {
     service = {
       listarActivas: vi.fn(),
+      listarTodas: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
       remove: vi.fn(),
@@ -47,5 +49,13 @@ describe('QueryTemplatesController', () => {
     controller.remove('5');
 
     expect(service.remove).toHaveBeenCalledWith(5);
+  });
+
+  it('findAllAdmin() delega en listarTodas() con el query recibido', () => {
+    const query = { page: 1, pageSize: 20, active: false };
+
+    controller.findAllAdmin(query);
+
+    expect(service.listarTodas).toHaveBeenCalledWith(query);
   });
 });

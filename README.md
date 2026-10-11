@@ -176,6 +176,7 @@ Base path: `/api`
 | Método | Ruta | Descripción | Acceso |
 | --- | --- | --- | --- |
 | GET | `/query-templates` | Lista las plantillas activas, por `displayOrder`, paginada (`?search=&page=&pageSize=`) | Autenticado |
+| GET | `/query-templates/all` | Lista todas las plantillas (activas e inactivas), paginada (`?active=&search=&page=&pageSize=`) | Supervisor |
 | POST | `/query-templates` | Crea una plantilla | Supervisor |
 | PATCH | `/query-templates/:id` | Edita una plantilla | Supervisor |
 | DELETE | `/query-templates/:id` | Elimina una plantilla | Supervisor |

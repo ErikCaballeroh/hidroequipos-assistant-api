@@ -32,6 +32,32 @@ export class QueryTemplatesService {
         return { items, page: query.page, pageSize: query.pageSize, total };
     }
 
+    async listarTodas(query: FindQueryTemplatesQueryDto) {
+        const condiciones: Record<string, unknown> = {};
+        if (query.active !== undefined) {
+            condiciones.active = query.active;
+        }
+        if (query.search) {
+            condiciones.OR = [
+                { title: { contains: query.search, mode: 'insensitive' as const } },
+                { queryText: { contains: query.search, mode: 'insensitive' as const } },
+            ];
+        }
+        const where = Object.keys(condiciones).length > 0 ? condiciones : undefined;
+
+        const [items, total] = await Promise.all([
+            this.prisma.queryTemplate.findMany({
+                where,
+                orderBy: { displayOrder: 'asc' },
+                skip: (query.page - 1) * query.pageSize,
+                take: query.pageSize,
+            }),
+            this.prisma.queryTemplate.count({ where }),
+        ]);
+
+        return { items, page: query.page, pageSize: query.pageSize, total };
+    }
+
     create(dto: CreateQueryTemplateDto) {
         return this.prisma.queryTemplate.create({ data: dto });
     }
