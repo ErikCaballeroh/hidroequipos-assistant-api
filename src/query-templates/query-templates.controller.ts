@@ -23,6 +23,14 @@ export class QueryTemplatesController {
         return this.queryTemplatesService.listarActivas(query);
     }
 
+    @Get('all')
+    @UseGuards(RolesGuard)
+    @Roles('supervisor')
+    @ApiOkResponse({ type: QueryTemplatePageEntity })
+    findAllAdmin(@Query() query: FindQueryTemplatesQueryDto) {
+        return this.queryTemplatesService.listarTodas(query);
+    }
+
     @Post()
     @UseGuards(RolesGuard)
     @Roles('supervisor')

@@ -74,6 +74,70 @@ describe('QueryTemplatesService', () => {
     expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(expect.objectContaining({ skip: 10, take: 10 }));
   });
 
+  describe('listarTodas', () => {
+    it('sin active ni search, no aplica ningún filtro (devuelve activas e inactivas)', async () => {
+      await service.listarTodas({ page: 1, pageSize: 20 });
+
+      expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: undefined, skip: 0, take: 20 }),
+      );
+      expect(prisma.queryTemplate.count).toHaveBeenCalledWith({ where: undefined });
+    });
+
+    it('con active=false, filtra solo las inactivas', async () => {
+      await service.listarTodas({ page: 1, pageSize: 20, active: false });
+
+      expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { active: false } }),
+      );
+    });
+
+    it('con active=true, filtra solo las activas', async () => {
+      await service.listarTodas({ page: 1, pageSize: 20, active: true });
+
+      expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { active: true } }),
+      );
+    });
+
+    it('filtra por título o texto de consulta, case-insensitive, cuando se pasa search', async () => {
+      await service.listarTodas({ page: 1, pageSize: 20, search: 'algas' });
+
+      expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            OR: [
+              { title: { contains: 'algas', mode: 'insensitive' } },
+              { queryText: { contains: 'algas', mode: 'insensitive' } },
+            ],
+          },
+        }),
+      );
+    });
+
+    it('combina active y search cuando se pasan ambos', async () => {
+      await service.listarTodas({ page: 1, pageSize: 20, active: false, search: 'algas' });
+
+      expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            active: false,
+            OR: [
+              { title: { contains: 'algas', mode: 'insensitive' } },
+              { queryText: { contains: 'algas', mode: 'insensitive' } },
+            ],
+          },
+        }),
+      );
+    });
+
+    it('calcula skip/take a partir de page y pageSize', async () => {
+      await service.listarTodas({ page: 2, pageSize: 10 });
+
+      expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(expect.objectContaining({ skip: 10, take: 10 }));
+    });
+  });
+
   it('create() pasa el dto directamente a Prisma', async () => {
     const dto = { title: 'Agua verde', queryText: 'el agua está verde' };
 
