@@ -8,6 +8,7 @@ describe('QueryTemplatesService', () => {
   let prisma: {
     queryTemplate: {
       findMany: ReturnType<typeof vi.fn>;
+      count: ReturnType<typeof vi.fn>;
       create: ReturnType<typeof vi.fn>;
       update: ReturnType<typeof vi.fn>;
       delete: ReturnType<typeof vi.fn>;
@@ -17,7 +18,8 @@ describe('QueryTemplatesService', () => {
   beforeEach(async () => {
     prisma = {
       queryTemplate: {
-        findMany: vi.fn(),
+        findMany: vi.fn().mockResolvedValue([]),
+        count: vi.fn().mockResolvedValue(0),
         create: vi.fn(),
         update: vi.fn(),
         delete: vi.fn(),
@@ -39,12 +41,37 @@ describe('QueryTemplatesService', () => {
   });
 
   it('lista solo las plantillas activas ordenadas por displayOrder', async () => {
-    await service.listarActivas();
+    await service.listarActivas({ page: 1, pageSize: 20 });
 
     expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith({
       where: { active: true },
       orderBy: { displayOrder: 'asc' },
+      skip: 0,
+      take: 20,
     });
+    expect(prisma.queryTemplate.count).toHaveBeenCalledWith({ where: { active: true } });
+  });
+
+  it('filtra por título o texto de consulta, case-insensitive, cuando se pasa search', async () => {
+    await service.listarActivas({ page: 1, pageSize: 20, search: 'algas' });
+
+    expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          active: true,
+          OR: [
+            { title: { contains: 'algas', mode: 'insensitive' } },
+            { queryText: { contains: 'algas', mode: 'insensitive' } },
+          ],
+        },
+      }),
+    );
+  });
+
+  it('calcula skip/take a partir de page y pageSize', async () => {
+    await service.listarActivas({ page: 2, pageSize: 10 });
+
+    expect(prisma.queryTemplate.findMany).toHaveBeenCalledWith(expect.objectContaining({ skip: 10, take: 10 }));
   });
 
   it('create() pasa el dto directamente a Prisma', async () => {

@@ -9,7 +9,13 @@ import { Prisma } from '../generated/prisma/client.js';
 describe('KnowledgeBaseService', () => {
   let service: KnowledgeBaseService;
   let prisma: {
-    knowledgeBase: { findMany: ReturnType<typeof vi.fn>; create: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn>; delete: ReturnType<typeof vi.fn> };
+    knowledgeBase: {
+      findMany: ReturnType<typeof vi.fn>;
+      count: ReturnType<typeof vi.fn>;
+      create: ReturnType<typeof vi.fn>;
+      update: ReturnType<typeof vi.fn>;
+      delete: ReturnType<typeof vi.fn>;
+    };
     $executeRaw: ReturnType<typeof vi.fn>;
   };
   let embeddingsService: { generarEmbedding: ReturnType<typeof vi.fn> };
@@ -17,7 +23,8 @@ describe('KnowledgeBaseService', () => {
   beforeEach(async () => {
     prisma = {
       knowledgeBase: {
-        findMany: vi.fn(),
+        findMany: vi.fn().mockResolvedValue([]),
+        count: vi.fn().mockResolvedValue(0),
         create: vi.fn(),
         update: vi.fn(),
         delete: vi.fn(),
@@ -39,6 +46,33 @@ describe('KnowledgeBaseService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('findAll', () => {
+    it('lists without a search filter when search is omitted', async () => {
+      await service.findAll({ page: 1, pageSize: 20 });
+
+      expect(prisma.knowledgeBase.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: undefined, skip: 0, take: 20 }),
+      );
+      expect(prisma.knowledgeBase.count).toHaveBeenCalledWith({ where: undefined });
+    });
+
+    it('filters by title, case-insensitive, when search is given', async () => {
+      await service.findAll({ page: 1, pageSize: 20, search: 'algas' });
+
+      expect(prisma.knowledgeBase.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { title: { contains: 'algas', mode: 'insensitive' } },
+        }),
+      );
+    });
+
+    it('computes skip/take from page and pageSize', async () => {
+      await service.findAll({ page: 2, pageSize: 10 });
+
+      expect(prisma.knowledgeBase.findMany).toHaveBeenCalledWith(expect.objectContaining({ skip: 10, take: 10 }));
+    });
   });
 
   describe('create', () => {

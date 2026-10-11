@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/roles.guard.js';
@@ -6,7 +6,9 @@ import { Roles } from '../auth/roles.decorator.js';
 import { KnowledgeBaseService } from './knowledge-base.service.js';
 import { CreateKnowledgeBaseDto } from './dto/create-knowledge-base.dto.js';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto.js';
+import { FindKnowledgeBaseQueryDto } from './dto/find-knowledge-base-query.dto.js';
 import { KnowledgeBaseEntity } from './entities/knowledge-base.entity.js';
+import { KnowledgeBasePageEntity } from './entities/knowledge-base-page.entity.js';
 
 @ApiTags('knowledge-base')
 @ApiBearerAuth()
@@ -17,9 +19,9 @@ export class KnowledgeBaseController {
     constructor(private readonly knowledgeBaseService: KnowledgeBaseService) { }
 
     @Get()
-    @ApiOkResponse({ type: KnowledgeBaseEntity, isArray: true })
-    findAll() {
-        return this.knowledgeBaseService.findAll();
+    @ApiOkResponse({ type: KnowledgeBasePageEntity })
+    findAll(@Query() query: FindKnowledgeBaseQueryDto) {
+        return this.knowledgeBaseService.findAll(query);
     }
 
     @Post()
