@@ -5,6 +5,7 @@ export class MessageListItemEntity {
     answerPreview: string;
     feedback: 'like' | 'dislike' | null;
     bestMatchDistance: number | null;
+    success: boolean;
 }
 
 export class MessagePageEntity {

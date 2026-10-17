@@ -116,7 +116,8 @@ export class AdminService {
             this.prisma.$queryRaw<any[]>`
         SELECT m.id, m.created_at AS "createdAt", q.content AS question,
                LEFT(m.content, 100) AS "answerPreview", f.type AS feedback,
-               m.best_match_distance AS "bestMatchDistance"
+               m.best_match_distance AS "bestMatchDistance",
+               (m.best_match_distance IS NOT NULL AND m.best_match_distance <= ${this.UMBRAL_CONFIANZA}) AS success
         FROM messages m
         LEFT JOIN LATERAL (
           SELECT content FROM messages u
