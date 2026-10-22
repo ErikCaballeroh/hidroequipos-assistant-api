@@ -10,7 +10,11 @@ async function bootstrap() {
   app.enableCors({ origin: process.env.FRONTEND_URL });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-  if (process.env.NODE_ENV !== 'production') {
+  const swaggerEnabled = process.env.SWAGGER_ENABLED
+    ? process.env.SWAGGER_ENABLED === 'true'
+    : process.env.NODE_ENV !== 'production';
+
+  if (swaggerEnabled) {
     const config = new DocumentBuilder()
       .setTitle('Hidroequipos Assistant API')
       .addBearerAuth()

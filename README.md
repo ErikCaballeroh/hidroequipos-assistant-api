@@ -88,6 +88,7 @@ npx prisma db seed
 | `CONFIDENCE_THRESHOLD` | Umbral de similitud mínima para considerar que hay contexto suficiente | Recomendado |
 | `PORT` | Puerto del servidor (default `3001`, para liberar el 3000 a `next dev`) | Opcional |
 | `FRONTEND_URL` | Origen permitido por CORS para el frontend | Sí |
+| `SWAGGER_ENABLED` | Activa/desactiva `/api/docs`. Si no está definida, se usa `NODE_ENV !== 'production'` como valor por defecto | Opcional |
 
 ## Scripts
 
