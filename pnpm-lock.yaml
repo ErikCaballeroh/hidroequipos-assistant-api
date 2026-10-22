@@ -47,6 +47,9 @@ importers:
       class-validator:
         specifier: ^0.15.1
         version: 0.15.1
+      dotenv:
+        specifier: ^18.0.4
+        version: 18.0.4
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -102,9 +105,6 @@ importers:
       csv-parse:
         specifier: ^7.0.3
         version: 7.0.3
-      dotenv:
-        specifier: ^18.0.4
-        version: 18.0.4
       oxlint:
         specifier: ^1.58.0
         version: 1.85.0

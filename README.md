@@ -123,6 +123,24 @@ Con el servidor corriendo (y `NODE_ENV` distinto de `production`), la documentac
 http://localhost:3001/api/docs
 ```
 
+## Docker
+
+El Dockerfile es multietapa: compila con `pnpm` y genera el cliente de Prisma en una etapa de build, y en la etapa final solo instala dependencias de producción y corre `dist/main.js` como usuario no root.
+
+### Construir la imagen
+
+```bash
+docker build -t hidro-api .
+```
+
+### Correr el contenedor
+
+```bash
+docker run -d --name hidro-api --env-file .env -e PORT=8080 -e NODE_ENV=production -p 8080:8080 hidro-api
+```
+
+La API queda disponible en `http://localhost:8080/api` (prefijo `/api` incluido, igual que en desarrollo). El contenedor no corre migraciones ni seed — la base de datos (Supabase) se migra por fuera, con `npx prisma migrate deploy` usando `DIRECT_URL`.
+
 ## Autenticación
 
 Las rutas protegidas requieren el header:
