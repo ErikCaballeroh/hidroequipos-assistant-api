@@ -6,3 +6,5 @@ dist
 src/generated
 .plans
 coverage
+.claude
+.agents
